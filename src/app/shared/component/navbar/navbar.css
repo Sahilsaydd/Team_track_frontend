@@ -1,0 +1,78 @@
+.top-navbar{
+    height: 80px;
+    
+    border-bottom: 1px solid #E5E7EB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-box{
+    width: 40%;
+    background: #F3F4F6;
+    border-radius: 30px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-box input{
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+}
+
+.navbar-right{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-btn{
+    width: 42px;
+    height: 42px;
+    background: #F3F4F6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-section{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-section img{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+
+.profile-section h6{
+    margin: 0;
+}
+
+.profile-section p{
+    margin: 0;
+    font-size: 12px;
+    color: gray;
+}
+
+@media (max-width: 992px) {
+    .search-box{ display: none; }
+    .top-navbar{ padding: 0 14px; }
+    .navbar-right{ gap: 10px; }
+    .profile-section h6{ display: none; }
+}
+
+@media (max-width: 576px) {
+    .icon-btn{ width: 36px; height: 36px; }
+    .profile-section img{ width: 36px; height: 36px; }
+}

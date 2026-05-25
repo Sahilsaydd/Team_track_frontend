@@ -1,0 +1,36 @@
+/* MAIN LAYOUT */
+
+.dashboard-layout{
+    display: flex;
+    min-height: 100vh;
+    background: #F5F7FB;
+}
+
+.sidebar-shell{
+    width: 270px;
+    flex-shrink: 0;
+}
+
+/* MAIN SECTION */
+
+.main-section{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* PAGE CONTENT */
+
+.page-content{
+    padding: 0 25px 25px;
+    flex: 1;
+}
+
+@media (max-width: 991.98px){
+    .sidebar-shell{
+        display: contents;
+        width: auto;
+        flex-shrink: 1;
+    }
+}

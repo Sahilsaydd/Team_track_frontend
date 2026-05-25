@@ -1,0 +1,14 @@
+.dashboard-hero{
+    padding: 18px 22px;
+    border-radius: 0;
+    margin-top: 0;
+}
+
+.dashboard-hero h1,
+.dashboard-hero p{
+    margin-bottom: 0;
+}
+
+.dashboard-hero p{
+    margin-top: 10px;
+}

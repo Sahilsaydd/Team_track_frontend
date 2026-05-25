@@ -1,0 +1,157 @@
+/* PAGE */
+
+.login-page{
+    min-height: 100vh;
+    background:
+    linear-gradient(
+        135deg,
+        #4F46E5,
+        #6366F1
+    );
+
+    display: flex;
+    align-items: center;
+}
+
+/* CARD */
+
+.login-card{
+    background: white;
+    padding: 45px;
+    border-radius: 24px;
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.15);
+}
+
+/* ensure card sits above bootstrap offcanvas backdrop when necessary */
+.login-card{
+    position: relative;
+    z-index: 1070;
+}
+
+/* LOGO */
+
+.logo-icon{
+    width: 85px;
+    height: 85px;
+
+    background: #4F46E5;
+
+    border-radius: 22px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+
+    font-size: 34px;
+}
+
+/* BRAND */
+
+.brand-title{
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 5px;
+}
+
+.brand-subtitle{
+    color: #6B7280;
+    font-size: 14px;
+}
+
+/* LABELS */
+
+.form-label{
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 10px;
+}
+
+/* INPUT */
+
+.input-group-text{
+    background: #EEF2FF;
+    border: none;
+    color: #4F46E5;
+}
+
+.form-control{
+    border: none;
+    background: #F9FAFB;
+    padding: 14px;
+}
+
+.form-control:focus{
+    box-shadow: none;
+    border: 1px solid #4F46E5;
+}
+
+/* LOGIN BUTTON */
+
+.login-btn{
+    background: #4F46E5;
+    border: none;
+    padding: 14px;
+
+    font-weight: 600;
+    border-radius: 12px;
+
+    transition: 0.3s;
+}
+
+.login-btn:hover{
+    background: #4338CA;
+}
+
+/* LINK */
+
+.forgot-link{
+    text-decoration: none;
+    color: #4F46E5;
+    font-size: 14px;
+}
+
+/* MOBILE */
+
+@media (max-width: 1024px) {
+  .login-page{
+    padding: 24px;
+    align-items: flex-start;
+  }
+  .login-card{
+    width: 100%;
+    max-width: 520px;
+    margin: 32px auto;
+    padding: 36px 24px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width:576px){
+
+    .login-card{
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+    .logo-icon{
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+    }
+    .brand-title{
+        font-size: 1.1rem;
+    }
+    .brand-subtitle{
+        font-size: 13px;
+    }
+    .form-control{
+        padding: 12px;
+    }
+    .login-btn{
+        padding: 12px;
+    }
+
+}

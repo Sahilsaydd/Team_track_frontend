@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+html,body{
+	height:100%;
+}
+
+/* Main section spacing handled by Bootstrap grid; ensure content stacks nicely */
+.main-section{
+	min-height: 100vh;
+	background: #f8fafc;
+}
+
+/* Offcanvas sidebar helper: when Bootstrap applies offcanvas classes, we want the sidebar to overlay
+	 and the main content to take full width underneath. The offcanvas uses high z-index, so ensure
+	 page elements are below it. */
+.offcanvas-backdrop{ z-index: 1040; }
+.offcanvas{ z-index: 1050; }
+
+.login-card{ z-index: 1070; }
+
+

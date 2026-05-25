@@ -1,0 +1,108 @@
+<div 
+  #sidebarOffcanvas
+  class="offcanvas-lg offcanvas-start sidebar "
+  tabindex="-1"
+  id="sidebarMenu">
+
+  <div class="offcanvas-header d-lg-none">
+
+    <h5 class="offcanvas-title">
+      TeamTrack
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close"
+      (click)="close()">
+    </button>
+
+  </div>
+
+  <div class="offcanvas-body p-0 d-flex flex-column justify-content-between " >
+
+
+    <div>
+
+      <div class="logo-section">
+
+        <div class="logo-icon">
+          T
+        </div>
+
+        <div>
+
+          <h3 class="logo-title">
+            TeamTrack
+          </h3>
+
+          <p class="logo-subtitle">
+            Enterprise Task Management
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <ul class="menu-list">
+
+        <li class="menu-item "  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+
+          <i class="fa-solid fa-table-columns"></i>
+
+           <a class="fw-semibold" routerLink="/">Dashboard</a>
+
+        </li>
+
+        <li class="menu-item"  routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+
+          <i class="fa-regular fa-user"></i>
+
+          <span>Users</span>
+
+        </li>
+
+        <li class="menu-item">
+
+          <i class="fa-solid fa-people-group"></i>
+
+          <span>Groups</span>
+
+        </li>
+
+        <li class="menu-item">
+
+          <i class="fa-solid fa-list-check"></i>
+
+          <span>Tasks</span>
+
+        </li>
+
+        <li class="menu-item">
+
+          <i class="fa-solid fa-gear"></i>
+
+          <span>Settings</span>
+
+        </li>
+
+      </ul>
+
+    </div>
+
+
+    <div class="new-task-btn">
+
+      <button class="btn task-btn">
+
+        <i class="fa-solid fa-plus"></i>
+
+        New Task
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
