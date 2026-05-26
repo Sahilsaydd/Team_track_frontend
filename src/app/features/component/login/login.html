@@ -47,27 +47,19 @@
 
                                 </span>
 
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    placeholder="Enter your email"
-                                    name="email"
-                                    [(ngModel)]="email"
-                                    #emailField="ngModel"
-                                    required
-                                    email
-                                >
+                                <input type="email" class="form-control" placeholder="Enter your email" name="email"
+                                    [(ngModel)]="email" #emailField="ngModel" required email>
 
                             </div>
 
 
                             @if(emailField.invalid && emailField.touched){
 
-                                <small class="text-danger">
+                            <small class="text-danger">
 
-                                    Valid email is required
+                                Valid email is required
 
-                                </small>
+                            </small>
 
                             }
 
@@ -90,27 +82,20 @@
 
                                 </span>
 
-                                <input
-                                    type="password"
-                                    class="form-control"
-                                    placeholder="Enter your password"
-                                    name="password"
-                                    [(ngModel)]="password"
-                                    #passwordField="ngModel"
-                                    required
-                                    minlength="6"
-                                >
+                                <input type="password" class="form-control" placeholder="Enter your password"
+                                    name="password" [(ngModel)]="password" #passwordField="ngModel" required
+                                    minlength="6">
 
                             </div>
 
 
                             @if(passwordField.invalid && passwordField.touched){
 
-                                <small class="text-danger">
+                            <small class="text-danger">
 
-                                    Password must be at least 6 characters
+                                Password must be at least 6 characters
 
-                                </small>
+                            </small>
 
                             }
 
@@ -121,12 +106,7 @@
 
                             <div class="form-check">
 
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    id="rememberMe"
-                                    name="rememberMe"
-                                >
+                                <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
 
                                 <label class="form-check-label" for="rememberMe">
 
@@ -136,23 +116,12 @@
 
                             </div>
 
-                            <a
-                                href="#"
-                                class="forgot-link"
-                            >
 
-                                Forgot Password?
-
-                            </a>
 
                         </div>
 
-                    
-                        <button
-                            type="submit"
-                            class="btn login-btn w-100"
-                            [disabled]="loginForm.invalid"
-                        >
+
+                        <button type="submit" class="btn login-btn w-100" [disabled]="loginForm.invalid">
 
                             <i class="fa-solid fa-right-to-bracket me-2"></i>
 

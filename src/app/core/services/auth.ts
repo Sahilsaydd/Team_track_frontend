@@ -1,17 +1,34 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
-  url =  'http://127.0.0.1:8000/auth/login';
 
-  constructor(private http: HttpClient) {}
+  url = 'http://localhost:8000/auth/';
 
-  login(data: any){
-    return this.http.post(this.url,data ,{withCredentials: true});
+  constructor(private http: HttpClient) { }
+
+  login(data: any) {
+
+    return this.http.post(this.url + 'login', data, { withCredentials: true });
+  }
+
+  logout() {
+    const token = sessionStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(
+      this.url + 'logout', {}, { headers, withCredentials: true }
+    );
 
   }
-  
+
+  isLoggedIn(): boolean {
+    return !!sessionStorage.getItem('token');
+  }
 }
+

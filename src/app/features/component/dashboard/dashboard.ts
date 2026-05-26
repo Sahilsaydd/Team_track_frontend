@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {}
+export class Dashboard {
+
+role:any = history.state?.role || sessionStorage.getItem('role') || '';
+}

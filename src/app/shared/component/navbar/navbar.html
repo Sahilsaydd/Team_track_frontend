@@ -1,9 +1,8 @@
-<nav class="top-navbar " >
+<nav class="top-navbar">
 
     <button class="btn d-lg-none me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
-      <i class="fa-solid fa-bars"></i>
+        <i class="fa-solid fa-bars"></i>
     </button>
-
 
     <div class="search-box">
 
@@ -16,7 +15,6 @@
 
     </div>
 
-
     <div class="navbar-right">
 
         <div class="icon-btn">
@@ -27,21 +25,49 @@
             <i class="fa-regular fa-circle-question"></i>
         </div>
 
+        <div class="dropdown profile-dropdown-wrapper" [class.show]="isProfileMenuOpen">
 
-        <div class="profile-section">
-
-            <img
-                src="https://i.pravatar.cc/40"
-                alt="profile"
+            <button
+                class="profile-section dropdown-toggle"
+                type="button"
+                [attr.aria-expanded]="isProfileMenuOpen"
+                (click)="toggleProfileMenu()"
             >
 
-            <div>
+                <img
+                    src="https://i.pravatar.cc/40"
+                    alt="profile"
+                >
 
-                <h6>Employee 1</h6>
+                <div class="profile-info">
 
-                <p>Admin</p>
+                    <h6>{{ user?.name || 'Employee 1' }}</h6>
 
-            </div>
+                    <p>{{ user?.role || 'Admin' }}</p>
+
+                </div>
+
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end profile-dropdown" [class.show]="isProfileMenuOpen">
+
+                <li>
+                    <a class="dropdown-item" routerLink="/" (click)="closeProfileMenu()">
+                        <i class="fa-regular fa-user"></i>
+                        View Profile
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <li>
+                    <button class="dropdown-item logout-item" type="button" (click)="logout()">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </li>
+
+            </ul>
 
         </div>
 
