@@ -15,19 +15,19 @@ export interface NavItem {
 
 export const SIDEBAR_NAV: Record<string, NavItem[]> = {
 
- 
+
   SuperAdmin: [
     {
       label: 'Dashboard',
       icon: 'fa-solid fa-table-columns',
-      route: '/'
+      route: '/superadmin'
     },
     {
       label: 'Users',
       icon: 'fa-solid fa-users',
       children: [
         { label: 'All Users', icon: 'fa-solid fa-user-group', route: '/users' },
-        { label: 'Create User', icon: 'fa-solid fa-user-plus', route: '/users/create' },
+        { label: 'Create Admin', icon: 'fa-solid fa-user-plus', route: '/users/create_admin' },
       ]
     },
     {
@@ -71,14 +71,14 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
     {
       label: 'Dashboard',
       icon: 'fa-solid fa-table-columns',
-      route: '/'
+      route: '/admin'
     },
     {
       label: 'Users',
       icon: 'fa-solid fa-users',
       children: [
-        { label: 'All Users', icon: 'fa-solid fa-user-group', route: '/users' },
-        { label: 'Create User', icon: 'fa-solid fa-user-plus', route: '/users/create' },
+        { label: 'All Employees', icon: 'fa-solid fa-user-group', route: '/employees' },
+        { label: 'Create Employee', icon: 'fa-solid fa-user-plus', route: '/employees/create' },
       ]
     },
     {
@@ -109,41 +109,14 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
     }
   ],
 
-  // ─── Manager ─────────────────────────────────────────────
-  Manager: [
-    {
-      label: 'Dashboard',
-      icon: 'fa-solid fa-table-columns',
-      route: '/'
-    },
-    {
-      label: 'Groups',
-      icon: 'fa-solid fa-people-group',
-      children: [
-        { label: 'My Groups', icon: 'fa-solid fa-layer-group', route: '/groups' },
-      ]
-    },
-    {
-      label: 'Tasks',
-      icon: 'fa-solid fa-list-check',
-      children: [
-        { label: 'All Tasks', icon: 'fa-solid fa-clipboard-list', route: '/tasks' },
-        { label: 'Create Task', icon: 'fa-solid fa-square-plus', route: '/tasks/create' },
-      ]
-    },
-    {
-      label: 'Notifications',
-      icon: 'fa-solid fa-bell',
-      route: '/notifications'
-    }
-  ],
+
 
   // ─── User (Employee) ────────────────────────────────────
-  User: [
+  Employee: [
     {
       label: 'Dashboard',
       icon: 'fa-solid fa-table-columns',
-      route: '/'
+      route: '/employee'
     },
     {
       label: 'Tasks',

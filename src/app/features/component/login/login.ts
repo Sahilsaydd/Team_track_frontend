@@ -50,7 +50,17 @@ export class Login implements OnInit {
         this.roleService.setRole(role ?? '');
 
         this.loading = false;
-        this.router.navigateByUrl('/');
+        const landingRoute =
+          role === 'SuperAdmin'
+            ? '/superadmin'
+            : role === 'Admin'
+              ? '/admin'
+              :  role === 'Employee'
+                 ? '/employee'
+                 : '/login';
+
+
+        this.router.navigateByUrl(landingRoute);
       },
       error: (error) => {
         this.loading = false;

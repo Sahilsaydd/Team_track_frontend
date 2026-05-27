@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -16,19 +16,13 @@ export class Auth {
   }
 
   logout() {
-    const token = sessionStorage.getItem('token') || '';
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
     return this.http.post(
-      this.url + 'logout', {}, { headers, withCredentials: true }
+      this.url + 'logout', {}, { withCredentials: true }
     );
 
   }
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token');
+    return !!sessionStorage.getItem('user') || !!sessionStorage.getItem('role');
   }
 }
-

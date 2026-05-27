@@ -1,0 +1,184 @@
+<div class="users-page">
+  <div class="hero-card">
+    <div>
+      <p class="eyebrow">SuperAdmin Users</p>
+      <h1>All Users</h1>
+      <p class="subtitle">
+        Live user summary from the API. Active users are `is_active: true` and inactive users are `is_active: false`.
+      </p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="state-card">Loading users...</div>
+  } @else if (errorMessage) {
+    <div class="state-card error">{{ errorMessage }}</div>
+  } @else {
+    <div class="stats-grid">
+      <article class="stats-card">
+        <div class="stats-top">
+          <div class="stats-icon purple">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+        <p class="stats-title">TOTAL USERS</p>
+        <h2>{{ totalUsers }}</h2>
+      </article>
+
+      <article class="stats-card">
+        <div class="stats-top">
+          <div class="stats-icon green">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+        </div>
+        <p class="stats-title">ACTIVE NOW</p>
+        <h2>{{ activeUsers }}</h2>
+      </article>
+
+      <article class="stats-card">
+        <div class="stats-top">
+          <div class="stats-icon red">
+            <i class="fa-solid fa-user-xmark"></i>
+          </div>
+        </div>
+        <p class="stats-title">INACTIVE</p>
+        <h2>{{ inactiveUsers }}</h2>
+      </article>
+
+      <article class="stats-card">
+        <div class="stats-top">
+          <div class="stats-icon yellow">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+        </div>
+        <p class="stats-title">SUPER ADMINS</p>
+        <h2>{{ superAdmins }}</h2>
+      </article>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <div>
+          <h2>User Directory</h2>
+          <p>Search by name, filter by role, and switch between active/inactive users.</p>
+        </div>
+
+        <div class="table-info">
+          <span>Showing {{ showingStart }}-{{ showingEnd }} of {{ filteredUsers.length }} users</span>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onFilterChange()"
+            placeholder="Search users..."
+          >
+        </div>
+
+        <div class="filter-group">
+          <select
+            class="form-select"
+            [(ngModel)]="selectedStatus"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option value="All">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+
+          <select
+            class="form-select"
+            [(ngModel)]="selectedRole"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option value="All">All Roles</option>
+            <option value="SuperAdmin">SuperAdmin</option>
+            <option value="Admin">Admin</option>
+            <option value="Employee">Employee</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>SR.No</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined At</th>
+              <th> Total Experience</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of pagedUsers; track user.id; let i =$index) {
+              <tr>
+                <td data-label="SR.No">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                <td data-label="User Name">
+                  <div class="user-info">
+                    <div class="avatar-circle">
+                      {{ user.username.charAt(0).toUpperCase() }}
+                    </div>
+                    <div>
+                      <h6>{{ user.username }}</h6>
+                      <p>User ID: {{ user.id }}</p>
+                    </div>
+                  </div>
+                </td>
+                <td data-label="Email">{{ user.email }}</td>
+                <td data-label="Role">
+                  <span
+                    class="role-badge"
+                    [class.admin]="user.role === 'Admin'"
+                    [class.employee]="user.role === 'Employee'"
+                    [class.superadmin]="user.role === 'SuperAdmin'">
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td data-label="Joined At">
+                  {{ user.created_at| date:'mediumDate' }}
+                </td>
+                <td data-label="Total Experience">{{ getJoninedAgo(user.created_at) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination-wrapper" *ngIf="filteredUsers.length > 0">
+        <div class="rows-per-page">
+          Rows per page:
+          <select [(ngModel)]="pageSize" (ngModelChange)="onFilterChange()">
+            <option [ngValue]="5">5</option>
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+          </select>
+        </div>
+
+        <div class="custom-pagination">
+          <button type="button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+            <i class="fa-solid fa-angle-left"></i>
+          </button>
+
+          @for (page of pageNumbers; track page) {
+            <button
+              type="button"
+              [class.active]="currentPage === page"
+              (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          }
+
+          <button type="button" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+            <i class="fa-solid fa-angle-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
