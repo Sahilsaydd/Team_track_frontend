@@ -28,6 +28,7 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       children: [
         { label: 'All Users', icon: 'fa-solid fa-user-group', route: '/users' },
         { label: 'Create Admin', icon: 'fa-solid fa-user-plus', route: '/users/create_admin' },
+        { label: 'Create Employee', icon: 'fa-solid fa-user-plus', route: '/users/create_employee' },
       ]
     },
     {
@@ -78,7 +79,7 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       icon: 'fa-solid fa-users',
       children: [
         { label: 'All Employees', icon: 'fa-solid fa-user-group', route: '/employees' },
-        { label: 'Create Employee', icon: 'fa-solid fa-user-plus', route: '/employees/create' },
+        { label: 'Create Employee', icon: 'fa-solid fa-user-plus', route: '/users/create_employee' },
       ]
     },
     {

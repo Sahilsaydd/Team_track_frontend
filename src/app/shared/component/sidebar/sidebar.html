@@ -6,7 +6,6 @@
 
   <div class="offcanvas-body p-0 d-flex flex-column justify-content-between">
 
-    <!-- ── Logo Section ────────────────────────── -->
     <div>
 
       <div class="logo-section d-flex align-items-center justify-content-between w-100">
@@ -25,7 +24,6 @@
 
       </div>
 
-      <!-- ── Menu Section (role badge) ─────────── -->
       <div class="role-badge-wrapper">
         <span class="role-badge">
           <i class="fa-solid fa-shield-halved"></i>
@@ -33,12 +31,10 @@
         </span>
       </div>
 
-      <!-- ── Dynamic Menu Items ────────────────── -->
       <ul class="menu-list">
 
         @for (item of menuItems; track item.label) {
 
-          <!-- Item WITHOUT children → simple link -->
           @if (!item.children || item.children.length === 0) {
             <li>
               <a
@@ -52,11 +48,9 @@
             </li>
           }
 
-          <!-- Item WITH children → collapsible dropdown -->
           @if (item.children && item.children.length > 0) {
             <li class="menu-group" [class.expanded]="isExpanded(item.label)">
 
-              <!-- Parent toggle button -->
               <button
                 class="menu-item menu-parent"
                 [class.parent-active]="isParentActive(item)"
@@ -67,7 +61,6 @@
                 <i class="fa-solid fa-chevron-down chevron-icon"></i>
               </button>
 
-              <!-- Children list -->
               <ul class="submenu-list">
                 @for (child of item.children; track child.route) {
                   <li>
@@ -92,7 +85,6 @@
 
     </div>
 
-    <!-- ── Bottom New‑Task Button ──────────────── -->
     <div class="new-task-btn">
       <button class="btn task-btn" routerLink="/tasks/create">
         <i class="fa-solid fa-plus"></i>

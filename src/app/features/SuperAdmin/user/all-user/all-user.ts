@@ -29,7 +29,7 @@ export class AllUser implements OnInit {
 
   constructor(private user: User ,  private cdr:ChangeDetectorRef) {}
 
-  // Fetch all users on component initialization
+  
   ngOnInit(): void {
     this.user.getAllUsers().subscribe({
       next: (response) => {
