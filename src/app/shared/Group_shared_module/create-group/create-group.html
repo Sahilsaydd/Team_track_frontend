@@ -1,1 +1,322 @@
-<h1>This is the create  group Component</h1>
+<div class="group-page container-fluid py-4 py-lg-5">
+  <div class="group-hero card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 p-lg-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="page-badge">
+            <i class="fa-solid fa-people-group me-2"></i>
+            Team Builder
+          </span>
+          <h1 class="display-6 fw-semibold mt-3 mb-3">Create a professional group workspace</h1>
+          <p class="lead text-secondary mb-0">
+            Add a strong title, write a clear purpose, and assign members with roles before submitting.
+            A confirmation dialog will show the full group summary before it is created.
+          </p>
+        </div>
+        <div class="col-lg-4">
+          <div class="hero-summary">
+            <div class="summary-item">
+              <i class="fa-solid fa-clipboard-list"></i>
+              <div>
+                <span>Members added</span>
+                <strong>{{ groupData.members.length }}</strong>
+              </div>
+            </div>
+            <div class="summary-item">
+              <i class="fa-solid fa-crown"></i>
+              <div>
+                <span>Leaders</span>
+                <strong>{{ leaderCount }}</strong>
+              </div>
+            </div>
+            <div class="summary-item">
+              <i class="fa-solid fa-user-plus"></i>
+              <div>
+                <span>Available employees</span>
+                <strong>{{ employees.length }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="state-card">
+      <div class="spinner-border text-primary me-2" role="status"></div>
+      Loading employees...
+    </div>
+  } @else if (errorMessage) {
+    <div class="alert alert-danger shadow-sm border-0">
+      <i class="fa-solid fa-triangle-exclamation me-2"></i>{{ errorMessage }}
+    </div>
+  }
+
+  <div class="row g-4">
+    <div class="col-xl-8">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-4 p-lg-5">
+          <div class="section-header mb-4">
+            <div>
+              <p class="section-eyebrow mb-1">Group details</p>
+              <h2 class="h4 mb-0">Build the team information</h2>
+            </div>
+            <i class="fa-solid fa-layer-group section-icon"></i>
+          </div>
+
+          <form #groupForm="ngForm" class="row g-4">
+            <div class="col-md-6">
+              <label class="form-label">Group name</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text"><i class="fa-solid fa-tag"></i></span>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  [(ngModel)]="groupData.name"
+                  placeholder="Marketing Squad"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Group image</label>
+              <div class="upload-card">
+                <div class="upload-preview" [class.has-image]="!!groupData.profile_pic">
+                  @if (groupData.profile_pic) {
+                    <img [src]="groupData.profile_pic" alt="Group preview">
+                  } @else {
+                    <i class="fa-solid fa-image"></i>
+                  }
+                </div>
+                <div class="upload-content">
+                  <div>
+                    <h3>Upload a group profile image</h3>
+                    <p>Choose a PNG, JPG, or WEBP file and we will convert it for the backend automatically.</p>
+                  </div>
+                  <label class="btn btn-outline-primary btn-sm">
+                    <i class="fa-solid fa-upload me-2"></i>Choose image
+                    <input type="file" hidden accept="image/*" (change)="onImageSelected($event)">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <div class="input-group input-group-lg">
+                <span class="input-group-text align-items-start pt-3"><i class="fa-solid fa-align-left"></i></span>
+                <textarea
+                  class="form-control"
+                  name="description"
+                  rows="4"
+                  [(ngModel)]="groupData.description"
+                  placeholder="Explain the group purpose, goals, and scope."
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="section-header mt-2">
+                <div>
+                  <p class="section-eyebrow mb-1">Members</p>
+                  <h2 class="h5 mb-0">Add team members and roles</h2>
+                </div>
+                <i class="fa-solid fa-user-plus section-icon"></i>
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label">Select employee</label>
+              <div class="employee-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  [(ngModel)]="employeeSearchTerm"
+                  name="employeeSearchTerm"
+                  placeholder="Search active employees..."
+                >
+              </div>
+              <div class="employee-selector">
+                @for (employee of filteredEmployees; track employee.id) {
+                  <button
+                    type="button"
+                    class="employee-pill"
+                    [class.active]="selectedEmployeeid === employee.id"
+                    (click)="selectedEmployeeid = employee.id"
+                  >
+                    <span class="employee-pill-avatar">{{ employee.username.charAt(0).toUpperCase() }}</span>
+                    <span class="employee-pill-body">
+                      <strong>{{ employee.username }}</strong>
+                      <small>{{ employee.email }}</small>
+                    </span>
+                    @if (selectedEmployeeid === employee.id) {
+                      <i class="fa-solid fa-circle-check"></i>
+                    }
+                  </button>
+                }
+                @if (!filteredEmployees.length) {
+                  <div class="employee-empty">
+                    <i class="fa-solid fa-user-xmark"></i>
+                    <p>No active employees match your search.</p>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Role</label>
+              <select
+                class="form-select form-select-lg"
+                [(ngModel)]="selectedRole"
+                name="selectedRole"
+              >
+                <option value="Member">Member</option>
+                <option value="Lead">Lead</option>
+
+
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Note</label>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                [(ngModel)]="note"
+                name="note"
+                placeholder="Optional note"
+              >
+            </div>
+
+            <div class="col-12 d-flex flex-wrap gap-3">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg px-4"
+                [disabled]="!canAddMember"
+                (click)="addMember()"
+              >
+                <i class="fa-solid fa-plus me-2"></i>Add member
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-lg px-4"
+                [disabled]="!groupData.members.length"
+                (click)="groupData.members = []"
+              >
+                <i class="fa-solid fa-rotate-left me-2"></i>Clear members
+              </button>
+            </div>
+
+            <div class="col-12">
+              <div class="member-list">
+                @if (!groupData.members.length) {
+                  <div class="empty-state">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>No members added yet</h3>
+                    <p>Add at least one member before creating the group.</p>
+                  </div>
+                } @else {
+                  @for (member of groupData.members; track member.user_id; let i = $index) {
+                    <div class="member-card">
+                      <div class="member-avatar">
+                        <i class="fa-solid fa-user"></i>
+                      </div>
+                      <div class="member-content">
+                        <div class="member-top">
+                          <div>
+                            <h3>{{ getEmployeeName(member.user_id) }}</h3>
+                            <p>{{ getEmployeeEmail(member.user_id) }}</p>
+                          </div>
+                          <span class="member-role" [class.lead]="member.role_in_group === 'Lead'">
+                            {{ member.role_in_group }}
+                          </span>
+                        </div>
+                        @if (member.note) {
+                          <p class="member-note">{{ member.note }}</p>
+                        }
+                      </div>
+                      <button type="button" class="btn btn-link text-danger" (click)="removeMember(i)">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end gap-3 pt-2">
+              <button type="reset" class="btn btn-light btn-lg px-4" (click)="resetMembers()">
+                <i class="fa-solid fa-broom me-2"></i>Reset
+              </button>
+              <button
+                type="button"
+                class="btn btn-success btn-lg px-4"
+                [disabled]="saving"
+                (click)="openConfirmDialog(groupForm)"
+              >
+                @if (saving) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Creating...
+                } @else {
+                  <i class="fa-solid fa-circle-check me-2"></i>Review & create
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-4">
+      <div class="card border-0 shadow-sm sticky-panel">
+        <div class="card-body p-4">
+          <p class="section-eyebrow mb-2">Live preview</p>
+          <h2 class="h5 mb-3">Group summary</h2>
+
+          <div class="preview-card">
+            <div class="preview-cover">
+              <i class="fa-solid fa-people-group"></i>
+            </div>
+            <div class="preview-body">
+              <h3>{{ groupData.name || 'Group name appears here' }}</h3>
+              <p>{{ groupData.description || 'Your description will appear here.' }}</p>
+            </div>
+          </div>
+
+          <div class="preview-stats">
+            <div>
+              <span>Members</span>
+              <strong>{{ groupData.members.length }}</strong>
+            </div>
+            <div>
+              <span>Leader</span>
+              <strong>{{ leaderCount }}</strong>
+            </div>
+          </div>
+
+          <div class="mini-list">
+            @if (!groupData.members.length) {
+              <p class="text-secondary mb-0">No member preview yet.</p>
+            } @else {
+              @for (member of groupData.members; track member.user_id) {
+                  <div class="mini-list-item">
+                  <i class="fa-solid fa-circle-user"></i>
+                  <div>
+                    <strong>{{ getEmployeeName(member.user_id) }}</strong>
+                    <span>{{ member.role_in_group }}</span>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

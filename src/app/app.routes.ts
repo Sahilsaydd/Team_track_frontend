@@ -45,6 +45,13 @@ export const routes: Routes = [
     loadComponent:()=> import('./shared/User_shared_module/create-employee/create-employee').then(m=>m.CreateEmployee),
     canActivate: [AuthGuard]
   },
+  // Groups SuperAdmin Routes
+
+  {
+    path:'groups',
+    loadComponent:()=> import('./shared/Group_shared_module/get-all-groups/get-all-groups').then(m=>m.GetAllGroups),
+    canActivate:[AuthGuard]
+  },
   {
     path: 'groups/create',
     loadComponent:()=>import('./shared/Group_shared_module/create-group/create-group').then(m=>m.CreateGroup),
