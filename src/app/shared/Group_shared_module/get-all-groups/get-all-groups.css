@@ -1,0 +1,260 @@
+.groups-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(13, 110, 253, 0.14), transparent 28%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+}
+
+.groups-hero,
+.stats-card,
+.filter-bar,
+.group-card,
+.empty-state,
+.state-card {
+  border-radius: 1.4rem;
+}
+
+.page-badge,
+.stats-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.hero-spotlight {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(180deg, #0d6efd 0%, #0b5ed7 100%);
+  color: #fff;
+}
+
+.spotlight-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.spotlight-row + .spotlight-row {
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.spotlight-row i {
+  width: 2.6rem;
+  height: 2.6rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.spotlight-row span,
+.group-code,
+.group-description,
+.group-meta span,
+.empty-state p {
+  color: #6c757d;
+}
+
+.spotlight-row strong {
+  display: block;
+  font-size: 1.15rem;
+}
+
+.stats-card {
+  height: 100%;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid #e8eef6;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+}
+
+.stats-icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+  margin-bottom: 0.85rem;
+  color: #fff;
+}
+
+.stats-icon.indigo {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.stats-icon.green {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+.stats-icon.blue {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+.stats-icon.amber {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+}
+
+.stats-card h2 {
+  margin: 0.15rem 0 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.search-wrap {
+  position: relative;
+}
+
+.search-wrap i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.search-wrap .form-control {
+  padding-left: 2.6rem;
+}
+
+.group-card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e8eef6;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+.group-image {
+  height: 180px;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  overflow: hidden;
+}
+
+.group-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.group-image-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #0d6efd;
+  font-size: 2.2rem;
+}
+
+.group-name {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.group-code {
+  font-size: 0.9rem;
+}
+
+.group-description {
+  min-height: 48px;
+  margin-bottom: 0;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-pill.active {
+  background: #eafaf0;
+  color: #15803d;
+}
+
+.status-pill.inactive {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.group-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: #f8fbff;
+  border: 1px solid #e8eef6;
+}
+
+.group-meta div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.group-meta strong {
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.group-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.group-actions .btn {
+  border-radius: 0.85rem;
+  font-weight: 600;
+}
+
+.empty-state,
+.state-card {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 1px dashed #dbe4f0;
+  background: #fff;
+}
+
+.empty-icon {
+  font-size: 2.2rem;
+  color: #0d6efd;
+}
+
+@media (max-width: 991.98px) {
+  .group-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .group-image {
+    height: 160px;
+  }
+
+  .group-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .group-actions .btn {
+    flex: 1 1 calc(50% - 0.5rem);
+  }
+}

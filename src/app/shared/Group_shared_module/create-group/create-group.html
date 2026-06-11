@@ -174,11 +174,10 @@
                 class="form-select form-select-lg"
                 [(ngModel)]="selectedRole"
                 name="selectedRole"
+                (ngModelChange)="onRoleChange()"
               >
                 <option value="Member">Member</option>
                 <option value="Lead">Lead</option>
-
-
               </select>
             </div>
 

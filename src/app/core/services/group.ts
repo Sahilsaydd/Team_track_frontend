@@ -21,4 +21,12 @@ export class Group {
   getAllGroups(): Observable<any[]>{
     return this.http.get<any[]>(`${this.url}/`)
   }
+
+  // get the group by its id
+
+  get_group_by_id(id:number):Observable<any>{
+    return this.http.get<any>(`${this.url}/${id}`)
+  }
+
+
 }

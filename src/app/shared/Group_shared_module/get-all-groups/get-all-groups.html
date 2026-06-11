@@ -1,1 +1,202 @@
-<p>get-all-groups works!</p>
+<div class="groups-page container-fluid py-4 py-lg-5">
+  <div class="groups-hero card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 p-lg-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+          <span class="page-badge">
+            <i class="fa-solid fa-people-group me-2"></i>
+            Groups Management
+          </span>
+          <h1 class="display-6 fw-semibold mt-3 mb-3">Manage all teams and group members</h1>
+          <p class="lead text-secondary mb-0">
+            Review active and inactive groups, inspect members, and manage group records from one clean dashboard.
+          </p>
+        </div>
+        <div class="col-lg-4">
+          <div class="hero-spotlight">
+            <div class="spotlight-row">
+              <i class="fa-solid fa-layer-group"></i>
+              <div>
+                <span>Total groups</span>
+                <strong>{{ totalGroups }}</strong>
+              </div>
+            </div>
+            <div class="spotlight-row">
+              <i class="fa-solid fa-user-group"></i>
+              <div>
+                <span>Total members</span>
+                <strong>{{ totalMembers }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="state-card">
+      <div class="spinner-border text-primary me-2" role="status"></div>
+      Loading groups...
+    </div>
+  } @else if (errorMessage) {
+    <div class="alert alert-danger shadow-sm border-0">
+      <i class="fa-solid fa-triangle-exclamation me-2"></i>{{ errorMessage }}
+    </div>
+  } @else {
+    <div class="row g-4 mb-4">
+      <div class="col-md-6 col-xl-3">
+        <article class="stats-card">
+          <div class="stats-icon indigo">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <p class="stats-label">TOTAL GROUPS</p>
+          <h2>{{ totalGroups }}</h2>
+        </article>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <article class="stats-card">
+          <div class="stats-icon green">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <p class="stats-label">ACTIVE GROUPS</p>
+          <h2>{{ activeGroups }}</h2>
+        </article>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <article class="stats-card">
+          <div class="stats-icon blue">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <p class="stats-label">MEMBERS</p>
+          <h2>{{ totalMembers }}</h2>
+        </article>
+      </div>
+
+      <div class="col-md-6 col-xl-3">
+        <article class="stats-card">
+          <div class="stats-icon amber">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <p class="stats-label">TOTAL LEADER</p>
+          <h2>{{ totalLeaders }}</h2>
+        </article>
+      </div>
+    </div>
+
+    <div class="filter-bar card border-0 shadow-sm mb-4">
+      <div class="card-body p-4">
+        <div class="row g-3 align-items-end">
+          <div class="col-lg-7">
+            <label class="form-label">Search & Filters</label>
+            <div class="search-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                [(ngModel)]="searchTerm"
+                name="searchTerm"
+                placeholder="Search by name, code or description..."
+              >
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <label class="form-label">Status</label>
+            <select class="form-select form-select-lg" [(ngModel)]="statusFilter" name="statusFilter">
+              <option value="All">All Groups</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+
+          <div class="col-lg-2">
+            <button type="button" class="btn btn-outline-secondary btn-lg w-100" (click)="searchTerm = ''; statusFilter = 'All'">
+              <i class="fa-solid fa-rotate-left me-2"></i>Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (!filteredGroups.length) {
+      <div class="empty-state card border-0 shadow-sm">
+        <div class="card-body py-5 text-center">
+          <i class="fa-solid fa-folder-open empty-icon"></i>
+          <h3 class="mt-3 mb-2">No groups found</h3>
+          <p class="text-secondary mb-0">Try changing the search or filter criteria.</p>
+        </div>
+      </div>
+    } @else {
+      <div class="row g-4">
+        @for (group of filteredGroups; track trackByGroupId($index, group)) {
+          <div class="col-md-6 col-xl-4">
+            <article class="group-card card border-0 shadow-sm h-100">
+              <div class="group-image">
+                @if (getGroupImageUrl(group)) {
+                  <img [src]="getGroupImageUrl(group)!" alt="{{ group.name || 'Group image' }}">
+                } @else {
+                  <div class="group-image-placeholder">
+                    <i class="fa-solid fa-people-group"></i>
+                  </div>
+                }
+              </div>
+
+              <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                  <div>
+                    <h2 class="group-name">{{ group.name || 'Untitled Group' }}</h2>
+                    <p class="group-code mb-0">{{ group.group_code || 'No code available' }}</p>
+                  </div>
+                  <span class="status-pill" [class.active]="group.is_active !== false" [class.inactive]="group.is_active === false">
+                    <i class="fa-solid fa-circle"></i>
+                    {{ getStatusLabel(group) }}
+                  </span>
+                </div>
+
+                <p class="group-description mb-3">
+                  {{ group.description || 'No description available for this group.' }}
+                </p>
+
+                <div class="group-meta mb-3">
+                  <div>
+                    <span>Created</span>
+                    <strong>
+                      <i class="fa-regular fa-calendar-days me-1"></i>
+                      {{ getCreatedAtLabel(group.created_at) }}
+                    </strong>
+                  </div>
+                  <div>
+                    <span>Members</span>
+                    <strong>{{ getMemberCount(group) }}</strong>
+                  </div>
+                  <div>
+                    <span>Leaders</span>
+                    <strong>{{ getLeaderCount(group) }}</strong>
+                  </div>
+                </div>
+
+                <div class="group-actions mt-auto">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="openGroup(group)">
+                    <i class="fa-solid fa-eye me-1"></i>View
+                  </button>
+                  <button type="button" class="btn btn-outline-primary btn-sm" (click)="editGroup(group)">
+                    <i class="fa-solid fa-pen-to-square me-1"></i>Edit
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="viewMembers(group)">
+                    <i class="fa-solid fa-users me-1"></i>Members
+                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" [disabled]="group.is_active === false">
+                    <i class="fa-solid fa-ban me-1"></i>Disable
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

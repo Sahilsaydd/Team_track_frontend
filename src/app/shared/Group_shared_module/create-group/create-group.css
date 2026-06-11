@@ -79,7 +79,7 @@
 }
 
 .upload-preview {
-  min-height: 180px;
+  height: 130px;
   border-radius: 1rem;
   display: grid;
   place-items: center;
@@ -350,10 +350,17 @@
 .swal-image-preview,
 .swal-image-placeholder {
   width: 100%;
-  height: 180px;
+  height: 60px;
   border-radius: 1rem;
   margin: 0.25rem 0 0.75rem;
   object-fit: cover;
+}
+
+:host ::ng-deep .swal-image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .swal-image-placeholder {
@@ -366,19 +373,34 @@
 
 :host ::ng-deep .swal-group-summary {
   display: grid;
-  gap: 1rem;
+  gap: 0.85rem;
+}
+
+:host ::ng-deep .swal-hero {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.85rem;
+  border-radius: 1rem;
+  background: #ffffff;
+  border: 1px solid #e8eef6;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 :host ::ng-deep .swal-summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
 }
 
 :host ::ng-deep .swal-summary-grid > div {
-  padding: 0.85rem;
+  padding: 0.8rem 0.85rem;
   border-radius: 1rem;
   background: #f8fbff;
+  border: 1px solid #e8eef6;
+  display: grid;
+  gap: 0.15rem;
 }
 
 :host ::ng-deep .swal-label {
@@ -391,23 +413,34 @@
 }
 
 :host ::ng-deep .swal-description {
-  margin: 0;
+  margin: 0.35rem 0 0;
   color: #334155;
 }
 
 :host ::ng-deep .swal-member-list {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 0.65rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
 }
 
 :host ::ng-deep .swal-group-member {
-  display: flex;
-  gap: 0.75rem;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
   padding: 0.85rem;
   background: #fff;
   border: 1px solid #e8eef6;
   border-radius: 1rem;
+}
+
+:host ::ng-deep .swal-member-label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
 }
 
 :host ::ng-deep .swal-member-index {
@@ -422,9 +455,81 @@
   flex: none;
 }
 
+:host ::ng-deep .swal-member-copy {
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+:host ::ng-deep .swal-member-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+:host ::ng-deep .swal-role-badge {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0d6efd;
+  background: #eef4ff;
+  white-space: nowrap;
+}
+
 :host ::ng-deep .swal-member-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
   color: #6c757d;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+
+:host ::ng-deep .group-review-popup {
+  border-radius: 1.5rem;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+  max-height: 78vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+:host ::ng-deep .group-review-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+  padding-bottom: 0.25rem;
+}
+
+:host ::ng-deep .group-review-body {
+  text-align: left;
+  margin-top: 0.5rem;
+  max-height: 52vh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+:host ::ng-deep .group-review-actions {
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+:host ::ng-deep .group-review-confirm,
+:host ::ng-deep .group-review-cancel {
+  min-width: 140px;
+  border-radius: 0.85rem !important;
+  font-weight: 600 !important;
+  padding: 0.8rem 1.2rem !important;
+}
+
+:host ::ng-deep .swal2-icon {
+  margin: 0.5rem auto 0.85rem;
+}
+
+:host ::ng-deep .swal2-html-container {
+  margin: 0;
+  overflow: visible;
 }
 
 @media (max-width: 991.98px) {
@@ -443,7 +548,38 @@
   }
 
   .preview-stats,
+  :host ::ng-deep .swal-hero,
   :host ::ng-deep .swal-summary-grid {
     grid-template-columns: 1fr;
+  }
+
+  :host ::ng-deep .swal-member-list {
+    max-height: 180px;
+  }
+
+  :host ::ng-deep .swal-hero {
+    grid-template-columns: 1fr;
+  }
+
+  :host ::ng-deep .swal-group-member {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  :host ::ng-deep .group-review-actions {
+    flex-direction: column-reverse;
+  }
+
+  :host ::ng-deep .group-review-confirm,
+  :host ::ng-deep .group-review-cancel {
+    width: 100%;
+  }
+
+  :host ::ng-deep .group-review-popup {
+    max-height: 86vh;
+  }
+
+  :host ::ng-deep .group-review-body {
+    max-height: 60vh;
   }
 }

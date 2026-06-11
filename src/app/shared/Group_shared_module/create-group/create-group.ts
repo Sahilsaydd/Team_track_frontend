@@ -88,8 +88,12 @@ export class CreateGroup implements OnInit {
     });
   }
 
-  get selectedEmployee(): EmployeeOption | undefined {
-    return this.employees.find((employee) => employee.id === Number(this.selectedEmployeeid));
+  get leaderCount(): number {
+    return this.groupData.members.filter((member) => member.role_in_group === 'Lead').length;
+  }
+
+  get canAddMember(): boolean {
+    return !!this.selectedEmployeeid && !!this.selectedRole && !this.isSelectedEmployeeAlreadyAdded();
   }
 
   getEmployeeById(userId: number): EmployeeOption | undefined {
@@ -104,12 +108,15 @@ export class CreateGroup implements OnInit {
     return this.getEmployeeById(userId)?.email || '';
   }
 
-  get leaderCount(): number {
-    return this.groupData.members.filter((member) => member.role_in_group === 'Lead').length;
-  }
+  onRoleChange(): void {
+    if (this.selectedRole === 'Lead' && this.leaderCount > 0) {
+      this.errorMessage = 'Only one leader is allowed in a group.';
+      this.cdr.detectChanges();
+      return;
+    }
 
-  get canAddMember(): boolean {
-    return !!this.selectedEmployeeid && !!this.selectedRole && !this.isSelectedEmployeeAlreadyAdded();
+    this.errorMessage = '';
+    this.cdr.detectChanges();
   }
 
   isSelectedEmployeeAlreadyAdded(): boolean {
@@ -140,11 +147,13 @@ export class CreateGroup implements OnInit {
 
     if (this.isSelectedEmployeeAlreadyAdded()) {
       this.errorMessage = 'This employee is already added to the group.';
+      this.cdr.detectChanges();
       return;
     }
 
     if (this.selectedRole === 'Lead' && this.groupData.members.some((m) => m.role_in_group === 'Lead')) {
       this.errorMessage = 'Only one leader is allowed in a group.';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -187,12 +196,30 @@ export class CreateGroup implements OnInit {
     const membersMarkup = this.groupData.members
       .map((member, index) => {
         const employee = this.employees.find((item) => item.id === member.user_id);
+        const noteMarkup = member.note
+          ? `<span><i class="fa-solid fa-note-sticky"></i>${this.escapeHtml(member.note)}</span>`
+          : '';
+
         return `
           <div class="swal-group-member">
-            <span class="swal-member-index">${index + 1}</span>
-            <div>
-              <strong>${employee?.username || `Employee #${member.user_id}`}</strong>
-              <div class="swal-member-meta">${member.role_in_group}${member.note ? ` • ${member.note}` : ''}</div>
+            <div class="swal-member-label">
+              <div class="swal-member-index">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div>
+                <span class="swal-label">Member</span>
+                <strong>${index + 1}</strong>
+              </div>
+            </div>
+            <div class="swal-member-copy">
+              <div class="swal-member-head">
+                <strong>${employee?.username || `Employee #${member.user_id}`}</strong>
+                <span class="swal-role-badge">${member.role_in_group}</span>
+              </div>
+              <div class="swal-member-meta">
+                <span><i class="fa-solid fa-id-badge"></i>ID ${member.user_id}</span>
+                ${noteMarkup}
+              </div>
             </div>
           </div>
         `;
@@ -205,22 +232,24 @@ export class CreateGroup implements OnInit {
 
     this.previewHtml = `
       <div class="swal-group-summary">
+        <div class="swal-hero">
+          ${imagePreview}
+          <div class="swal-hero-copy">
+            <span class="swal-label"><i class="fa-solid fa-clipboard-list me-1"></i>Group name</span>
+            <strong class="swal-title-text">${this.escapeHtml(this.groupData.name)}</strong>
+            <p class="swal-description">${this.escapeHtml(this.groupData.description || 'No description added yet.')}</p>
+          </div>
+        </div>
         <div class="swal-summary-grid">
           <div>
-            <span class="swal-label">Group name</span>
-            <strong>${this.escapeHtml(this.groupData.name)}</strong>
-          </div>
-          <div>
-            <span class="swal-label">Members</span>
+            <span class="swal-label"><i class="fa-solid fa-users me-1"></i>Members</span>
             <strong>${this.groupData.members.length}</strong>
           </div>
           <div>
-            <span class="swal-label">Leader</span>
+            <span class="swal-label"><i class="fa-solid fa-crown me-1"></i>Leader</span>
             <strong>${this.leaderCount || 0}</strong>
           </div>
         </div>
-        ${imagePreview}
-        <p class="swal-description">${this.escapeHtml(this.groupData.description || 'No description added yet.')}</p>
         <div class="swal-member-list">${membersMarkup}</div>
       </div>
     `;
@@ -234,8 +263,17 @@ export class CreateGroup implements OnInit {
       cancelButtonText: 'Go back',
       confirmButtonColor: '#0d6efd',
       cancelButtonColor: '#e2e8f0',
-      width: 720,
+      width: 560,
       reverseButtons: true,
+      padding: '1rem',
+      customClass: {
+        popup: 'group-review-popup',
+        title: 'group-review-title',
+        htmlContainer: 'group-review-body',
+        actions: 'group-review-actions',
+        confirmButton: 'group-review-confirm',
+        cancelButton: 'group-review-cancel',
+      },
     }).then((result) => {
       if (result.isConfirmed) {
         this.createGroup(form);
