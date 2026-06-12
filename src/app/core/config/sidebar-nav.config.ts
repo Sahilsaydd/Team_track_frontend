@@ -37,6 +37,7 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       children: [
         { label: 'All Groups', icon: 'fa-solid fa-layer-group', route: '/groups' },
         { label: 'Create Group', icon: 'fa-solid fa-folder-plus', route: '/groups/create' },
+        
       ]
     },
     {

@@ -58,6 +58,11 @@ export const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path: 'groups/:id',
+    loadComponent:()=>import('./shared/Group_shared_module/group-details/group-details').then(m=>m.GroupDetails),
+    canActivate:[AuthGuard]
+  },
+  {
     path: 'profile',
     loadComponent:()=> import('./features/SuperAdmin/Profile/profile/profile').then(m=>m.Profile),
     canActivate: [AuthGuard]

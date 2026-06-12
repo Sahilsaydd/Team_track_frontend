@@ -178,4 +178,10 @@ export class GetAllGroups implements OnInit {
   viewMembers(group: GroupCard): void {
     this.router.navigate(['/groups/create'], { state: { group, mode: 'members' } });
   }
+
+  redirectToGroupDetails(id: number): void {
+
+    this.router.navigate(['/groups/', id]);
+  }
+
 }

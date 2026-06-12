@@ -1,4 +1,4 @@
-<div class="groups-page container-fluid py-4 py-lg-5">
+<div class="groups-page container-fluid py-4 py-lg-5" >
   <div class="groups-hero card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <div class="row align-items-center g-4">
@@ -12,7 +12,7 @@
             Review active and inactive groups, inspect members, and manage group records from one clean dashboard.
           </p>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="hero-spotlight">
             <div class="spotlight-row">
               <i class="fa-solid fa-layer-group"></i>
@@ -179,7 +179,7 @@
                 </div>
 
                 <div class="group-actions mt-auto">
-                  <button type="button" class="btn btn-primary btn-sm" (click)="openGroup(group)">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="redirectToGroupDetails(group.id!)" [disabled]="group.id === undefined">
                     <i class="fa-solid fa-eye me-1"></i>View
                   </button>
                   <button type="button" class="btn btn-outline-primary btn-sm" (click)="editGroup(group)">

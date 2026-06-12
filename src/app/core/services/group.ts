@@ -28,5 +28,9 @@ export class Group {
     return this.http.get<any>(`${this.url}/${id}`)
   }
 
+  // get the group member
+  get_group_members(group_id:number):Observable<any>{
+    return this.http.get<any>(`${this.url}/${group_id}/members`)
+  }
 
 }
