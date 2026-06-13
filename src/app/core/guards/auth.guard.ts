@@ -37,14 +37,11 @@ export class AuthGuard implements CanActivate {
 
 
     const user = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('token');
 
-
-    if (user) {
-
+    if (user || token) {
       return true;
-
     }
-
 
     return this.router.createUrlTree(['/login']);
 

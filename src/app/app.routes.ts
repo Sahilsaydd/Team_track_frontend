@@ -24,6 +24,11 @@ export const routes: Routes = [
     loadComponent:()=> import('./features/Employee/employee-dashboard/employee-dashboard').then(m=>m.EmployeeDashboard),
     canActivate: [AuthGuard]
   },
+   {
+    path: 'employee/employee_groups',
+    loadComponent:()=> import('./features/Employee/groups/employee-groups/employee-groups').then(m=>m.EmployeeGroups),
+    canActivate:[AuthGuard]
+  },
   {
     // SuperAdmin routes start from here
     path: 'superadmin',
@@ -67,6 +72,8 @@ export const routes: Routes = [
     loadComponent:()=> import('./features/SuperAdmin/Profile/profile/profile').then(m=>m.Profile),
     canActivate: [AuthGuard]
   },
+
+
 
   {
     path: 'login',

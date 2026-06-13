@@ -1,0 +1,36 @@
+.card {
+  border-radius: 14px;
+}
+
+.nav-tabs .nav-link {
+  font-weight: 500;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+img {
+  object-fit: cover;
+}
+
+.card-header {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  .card-body h2 {
+    font-size: 1.4rem;
+  }
+
+  .table {
+    font-size: 14px;
+  }
+
+}

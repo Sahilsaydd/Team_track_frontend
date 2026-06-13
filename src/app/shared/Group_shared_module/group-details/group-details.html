@@ -1,1 +1,296 @@
-<h1>THis is the group Details Page</h1>
+<div class="container-fluid py-4">
+
+  <!-- Group Header -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+
+      <div class="row align-items-center">
+
+        <div class="col-md-auto text-center mb-3 mb-md-0">
+
+          <img
+            [src]="getImageUrl(group.profile_pic)"
+            class="rounded shadow-sm"
+            width="120"
+            height="120"
+            alt="Group Image"
+          >
+
+        </div>
+
+        <div class="col">
+
+          <div class="d-flex flex-wrap align-items-center gap-2">
+
+            <h2 class="mb-0 fw-bold">
+              {{ group.name }}
+            </h2>
+
+            <span
+              class="badge"
+              [ngClass]="group.is_active ? 'bg-success' : 'bg-secondary'"
+            >
+              {{ group.is_active ? 'Active' : 'Inactive' }}
+            </span>
+
+          </div>
+
+          <p class="text-primary fw-semibold mb-1">
+            {{ group.group_code }}
+          </p>
+
+          <p class="text-muted mb-0">
+            {{ group.description }}
+          </p>
+
+        </div>
+
+        <div class="col-md-auto mt-3 mt-md-0">
+
+          <div class="d-flex gap-2 flex-wrap">
+
+            <button class="btn btn-primary">
+              Add Member
+            </button>
+
+            <button class="btn btn-outline-primary">
+              Change Leader
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Stats -->
+
+  <div class="row g-3 mb-4">
+
+    <div class="col-md-3 col-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h3>{{ members.length }}</h3>
+          <small class="text-muted">Members</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h3>{{ leadCount }}</h3>
+          <small class="text-muted">Leaders</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h3>{{ tasks.length }}</h3>
+          <small class="text-muted">Tasks</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h3>{{ notifications.length }}</h3>
+          <small class="text-muted">Notifications</small>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tabs -->
+
+  <ul class="nav nav-tabs mb-4">
+
+    <li class="nav-item">
+      <button
+        class="nav-link active"
+        data-bs-toggle="tab"
+        data-bs-target="#members"
+      >
+        Members
+      </button>
+    </li>
+
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        data-bs-toggle="tab"
+        data-bs-target="#tasks"
+      >
+        Tasks
+      </button>
+    </li>
+
+    <li class="nav-item">
+      <button
+        class="nav-link"
+        data-bs-toggle="tab"
+        data-bs-target="#notifications"
+      >
+        Notifications
+      </button>
+    </li>
+
+  </ul>
+
+  <div class="tab-content">
+
+    <!-- Members -->
+
+    <div class="tab-pane fade show active" id="members">
+
+      <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+          <h5 class="mb-0">Group Members</h5>
+
+          <button class="btn btn-sm btn-primary">
+            Add Member
+          </button>
+
+        </div>
+
+        <div class="table-responsive">
+
+          <div class="list-group list-group-flush">
+            <div class="list-group-item py-3" *ngFor="let member of members">
+              <div class="d-flex align-items-center gap-3">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width:48px;height:48px;font-weight:600;">
+                  {{ getInitials(member.username) }}
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                      <div class="fw-semibold">{{ member.username }}</div>
+                      <div class="text-muted small">{{ member.email }}</div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                      <span class="badge" [ngClass]="member.role_in_group === 'Lead' ? 'bg-warning text-dark' : 'bg-info'">{{ member.role_in_group }}</span>
+                      <span class="badge" [ngClass]="member.is_active ? 'bg-success' : 'bg-secondary'">{{ member.is_active ? 'Active' : 'Inactive' }}</span>
+                      <div class="btn-group">
+                        <button class="btn btn-sm btn-light" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          <li><button class="dropdown-item">Change Leader</button></li>
+                          <li><button class="dropdown-item text-danger">Remove Member</button></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mt-2">
+                    <small class="text-muted">Joined: {{ member.created_at ? (member.created_at | date:'mediumDate') : '-' }}</small>
+                    <div class="btn-group">
+                      <button class="btn btn-sm btn-light" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li><button class="dropdown-item">Change Leader</button></li>
+                        <li><button class="dropdown-item text-danger">Remove Member</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Tasks -->
+
+    <div class="tab-pane fade" id="tasks">
+
+      <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white d-flex justify-content-between">
+
+          <h5 class="mb-0">
+            Group Tasks
+          </h5>
+
+          <button class="btn btn-primary btn-sm">
+            Create Task
+          </button>
+
+        </div>
+
+        <div class="list-group list-group-flush">
+
+          <div
+            class="list-group-item"
+            *ngFor="let task of tasks"
+          >
+
+            <div class="d-flex justify-content-between">
+
+              <div>
+
+                <h6 class="mb-1">
+                  {{ task.title }}
+                </h6>
+
+                <small class="text-muted">
+                  {{ task.description }}
+                </small>
+
+              </div>
+
+              <span class="badge bg-primary">
+                {{ task.status }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Notifications -->
+
+    <div class="tab-pane fade" id="notifications">
+
+      <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            Notifications
+          </h5>
+        </div>
+
+        <div class="list-group list-group-flush">
+
+          <div
+            class="list-group-item"
+            *ngFor="let n of notifications"
+          >
+
+            <i class="fas fa-bell me-2" aria-hidden="true"></i> {{ n.message }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

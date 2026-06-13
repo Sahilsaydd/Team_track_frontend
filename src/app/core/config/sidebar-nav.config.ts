@@ -37,7 +37,7 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       children: [
         { label: 'All Groups', icon: 'fa-solid fa-layer-group', route: '/groups' },
         { label: 'Create Group', icon: 'fa-solid fa-folder-plus', route: '/groups/create' },
-        
+
       ]
     },
     {
@@ -121,10 +121,10 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       route: '/employee'
     },
     {
-      label: 'Tasks',
+      label: 'Groups',
       icon: 'fa-solid fa-list-check',
       children: [
-        { label: 'My Tasks', icon: 'fa-solid fa-clipboard-list', route: '/tasks' },
+        { label: 'My Groups', icon: 'fa-solid fa-clipboard-list', route: '/employee/employee_groups' },
       ]
     },
     {

@@ -33,4 +33,9 @@ export class Group {
     return this.http.get<any>(`${this.url}/${group_id}/members`)
   }
 
+  // get employee all group
+  getMyGroups(): Observable<any[]>{
+    return this.http.get<any[]>(`${this.url}/my_groups`)
+  }
+
 }
