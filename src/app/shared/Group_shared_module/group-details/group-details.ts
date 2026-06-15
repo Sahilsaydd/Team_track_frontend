@@ -27,6 +27,7 @@ export class GroupDetails implements OnInit {
   notifications: any[] = [];
 
   loading = true;
+  isEmployee = false;
 
   constructor(
     private group_service: Group,
@@ -44,6 +45,25 @@ export class GroupDetails implements OnInit {
     this.loadGroupDetails();
     this.loadGroupMembers();
     this.loadGroupTasks();
+
+    // Determine current user role from localStorage (common pattern in this app)
+    try {
+      const raw = sessionStorage.getItem('currentUser') || sessionStorage.getItem('user') || null;
+      if (raw) {
+        const u = JSON.parse(raw);
+        this.isEmployee = (u.role || u.user?.role || '').toString() === 'Employee';
+      } else {
+        const role = sessionStorage.getItem('role');
+        this.isEmployee = role === 'Employee';
+      }
+    } catch (e) {
+      this.isEmployee = false;
+    }
+
+    console.log('Current User:', sessionStorage.getItem('currentUser'));
+console.log('User:', sessionStorage.getItem('user'));
+console.log('Role:', sessionStorage.getItem('role'));
+console.log('isEmployee:', this.isEmployee);
   }
 
   loadGroupDetails(): void {

@@ -1,0 +1,56 @@
+.update-card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.card-header {
+  border: none;
+}
+
+.group-image {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 4px solid #f1f5f9;
+  box-shadow: 0 8px 20px rgba(0,0,0,.1);
+}
+
+.image-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.form-control,
+.form-select {
+  height: 50px;
+  border-radius: 10px;
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+
+  .group-image {
+    width: 180px;
+    height: 180px;
+  }
+
+  .image-card {
+    margin-bottom: 20px;
+  }
+
+}

@@ -125,7 +125,10 @@
                       {{ user.username.charAt(0).toUpperCase() }}
                     </div>
                     <div>
-                      <h6>{{ user.username }}</h6>
+                      <h6>
+                        <span class="status-dot" [class.active]="user.is_active === true" [class.inactive]="user.is_active === false" aria-hidden="true"></span>
+                        {{ user.username }}
+                      </h6>
                       <p>User ID: {{ user.id }}</p>
                     </div>
                   </div>

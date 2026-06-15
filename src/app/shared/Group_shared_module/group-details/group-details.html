@@ -47,13 +47,13 @@
 
         <div class="col-md-auto mt-3 mt-md-0">
 
-          <div class="d-flex gap-2 flex-wrap">
+            <div class="d-flex gap-2 flex-wrap">
 
-            <button class="btn btn-primary">
+            <button class="btn btn-primary" *ngIf="!isEmployee">
               Add Member
             </button>
 
-            <button class="btn btn-outline-primary">
+            <button class="btn btn-outline-primary" *ngIf="!isEmployee">
               Change Leader
             </button>
 
@@ -175,11 +175,12 @@
                     <div>
                       <div class="fw-semibold">{{ member.username }}</div>
                       <div class="text-muted small">{{ member.email }}</div>
+                      <div class="text-muted small bg-body-secondary m-2 text-white p-1 rounded text-center">{{ member.note }}</div>
                     </div>
-                    <div class="d-flex align-items-center justify-content-end gap-2">
+                      <div class="d-flex align-items-center justify-content-end gap-2">
                       <span class="badge" [ngClass]="member.role_in_group === 'Lead' ? 'bg-warning text-dark' : 'bg-info'">{{ member.role_in_group }}</span>
                       <span class="badge" [ngClass]="member.is_active ? 'bg-success' : 'bg-secondary'">{{ member.is_active ? 'Active' : 'Inactive' }}</span>
-                      <div class="btn-group">
+                      <div class="btn-group" *ngIf="!isEmployee">
                         <button class="btn btn-sm btn-light" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                         <ul class="dropdown-menu dropdown-menu-end">
                           <li><button class="dropdown-item">Change Leader</button></li>
@@ -188,16 +189,16 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-between align-items-center mt-2">
-                    <small class="text-muted">Joined: {{ member.created_at ? (member.created_at | date:'mediumDate') : '-' }}</small>
-                    <div class="btn-group">
-                      <button class="btn btn-sm btn-light" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                      <ul class="dropdown-menu dropdown-menu-end">
-                        <li><button class="dropdown-item">Change Leader</button></li>
-                        <li><button class="dropdown-item text-danger">Remove Member</button></li>
-                      </ul>
-                    </div>
-                  </div>
+                    <!-- <div class="d-flex justify-content-between align-items-center mt-2">
+                      <small class="text-muted">Joined: {{ member.created_at ? (member.created_at | date:'mediumDate') : '-' }}</small>
+                      <div class="btn-group">
+                        <button class="btn btn-sm btn-light" data-bs-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          <li><button class="dropdown-item">Change Leader</button></li>
+                          <li><button class="dropdown-item text-danger">Remove Member</button></li>
+                        </ul>
+                      </div>
+                    </div> -->
                 </div>
               </div>
             </div>

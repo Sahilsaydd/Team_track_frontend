@@ -58,6 +58,10 @@ export const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path:'groups/update/:id',
+    loadComponent:()=>import('./shared/Group_shared_module/update-group/update-group').then(m=>m.UpdateGroup)
+  },
+  {
     path: 'groups/create',
     loadComponent:()=>import('./shared/Group_shared_module/create-group/create-group').then(m=>m.CreateGroup),
     canActivate:[AuthGuard]

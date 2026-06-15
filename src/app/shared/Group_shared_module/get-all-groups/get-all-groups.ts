@@ -8,6 +8,9 @@ import { Group } from '../../../core/services/group';
 type GroupMember = {
   user_id?: number;
   role_in_group?: string;
+  // Some API responses use different property names for role
+  role?: string;
+  roleName?: string;
 };
 
 type GroupCard = {
@@ -60,9 +63,43 @@ export class GetAllGroups implements OnInit {
           profile_pic: group.profile_pic,
           is_active: group.is_active ?? true,
           created_at: group.created_at,
-          members: group.members ?? [],
+          // Support multiple possible API shapes for members
+          members:
+            (Array.isArray(group.members) && group.members.length
+              ? group.members
+              : Array.isArray(group.group_members) && group.group_members.length
+              ? group.group_members
+              : Array.isArray(group.users) && group.users.length
+              ? group.users
+              : []
+            ).map((m: any) => ({
+              user_id: m.user_id ?? m.id,
+              role_in_group: m.role_in_group ?? m.role ?? m.roleName ?? m.role_name ?? m.position ?? '',
+              role: m.role ?? m.role_in_group ?? m.roleName ?? undefined,
+              roleName: m.roleName ?? m.role ?? m.role_in_group ?? undefined,
+            })),
         }));
         this.loading = false;
+        // After mapping groups, fetch members for each group to ensure accurate counts
+        this.groups.forEach((g) => {
+          if (g.id !== undefined) {
+            this.groupService.get_group_members(Number(g.id)).subscribe({
+              next: (membersData: any) => {
+                const raw = Array.isArray(membersData) ? membersData : membersData?.members ?? [];
+                g.members = raw.map((m: any) => ({
+                  user_id: m.user_id ?? m.id,
+                  role_in_group: m.role_in_group ?? m.role ?? m.roleName ?? m.role_name ?? m.position ?? '',
+                  role: m.role ?? m.role_in_group ?? m.roleName ?? undefined,
+                  roleName: m.roleName ?? m.role ?? m.role_in_group ?? undefined,
+                }));
+                this.cdr.detectChanges();
+              },
+              error: () => {
+                // leave members as-is (mapped value) on error
+              }
+            });
+          }
+        });
         this.cdr.detectChanges();
       },
       error: () => {
@@ -111,7 +148,10 @@ export class GetAllGroups implements OnInit {
 
   get totalLeaders(): number {
     return this.groups.reduce((sum, group) => {
-      const leaders = group.members?.filter((member) => (member.role_in_group || '').toLowerCase() === 'lead').length ?? 0;
+      const leaders = group.members?.filter((member) => {
+        const role = (member.role_in_group || member.role || member.roleName || '').toString().toLowerCase();
+        return role.includes('lead');
+      }).length ?? 0;
       return sum + leaders;
     }, 0);
   }
@@ -142,7 +182,10 @@ export class GetAllGroups implements OnInit {
   }
 
   getLeaderCount(group: GroupCard): number {
-    return group.members?.filter((member) => (member.role_in_group || '').toLowerCase() === 'lead').length ?? 0;
+    return group.members?.filter((member) => {
+      const role = (member.role_in_group || member.role || member.roleName || '').toString().toLowerCase();
+      return role.includes('lead');
+    }).length ?? 0;
   }
 
   getMemberCount(group: GroupCard): number {
@@ -171,8 +214,8 @@ export class GetAllGroups implements OnInit {
     this.router.navigate(['/groups/create'], { state: { group } });
   }
 
-  editGroup(group: GroupCard): void {
-    this.router.navigate(['/groups/create'], { state: { group, mode: 'edit' } });
+  editGroup(group:GroupCard):void{
+    this.router.navigate(['/groups/update',group.id])
   }
 
   viewMembers(group: GroupCard): void {

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateGroupModel } from '../model/create-group-model';
 import { Observable } from 'rxjs';
+import { Updategroup ,UpdateGroupRequest } from '../model/updategroup';
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +38,18 @@ export class Group {
   getMyGroups(): Observable<any[]>{
     return this.http.get<any[]>(`${this.url}/my_groups`)
   }
+
+
+ updategroup_services(
+  groupId: number,
+  data: UpdateGroupRequest
+): Observable<Updategroup> {
+
+  return this.http.put<Updategroup>(
+    `${this.url}/update/${groupId}`,
+    data
+  );
+}
+
 
 }

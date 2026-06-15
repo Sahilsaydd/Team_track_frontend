@@ -1,0 +1,168 @@
+<div class="container py-4">
+
+  <div class="card border-0 shadow-lg update-card">
+
+    <div class="card-header bg-primary text-white py-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+          <i class="bi bi-pencil-square me-2"></i>
+          Update Group
+        </h4>
+
+        <span class="badge bg-light text-dark">
+          Group Management
+        </span>
+      </div>
+    </div>
+
+    <div class="card-body p-4">
+
+      <form [formGroup]="updateForm" (ngSubmit)="submit()">
+
+        <div class="row">
+
+          <!-- Image Section -->
+          <div class="col-lg-4 mb-4">
+
+            <div class="image-card text-center">
+
+              <img
+                [src]="imagePreview || 'assets/default-group.png'"
+                class="group-image mb-3"
+              >
+
+              <input
+                type="file"
+                class="form-control"
+                accept="image/*"
+                (change)="onFileSelected($event)"
+              >
+
+              <small class="text-muted">
+                Upload Group Profile Picture
+              </small>
+
+            </div>
+
+          </div>
+
+          <!-- Form Fields -->
+          <div class="col-lg-8">
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Group Name
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Description
+              </label>
+
+              <textarea
+                rows="4"
+                class="form-control"
+                formControlName="description"
+              ></textarea>
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">
+                  Group Code
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="group_code"
+                  readonly
+                >
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">
+                  Created Date
+                </label>
+
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="created_at"
+                  readonly
+                >
+              </div>
+
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Group Status
+              </label>
+
+              <select
+                class="form-select"
+                formControlName="is_active"
+              >
+                <option [ngValue]="true">
+                  Active
+                </option>
+
+                <option [ngValue]="false">
+                  Inactive
+                </option>
+              </select>
+            </div>
+
+          </div>
+
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-end gap-3">
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary px-4"
+            (click)="router.navigate(['/groups'])"
+          >
+            <i class="bi bi-arrow-left me-2"></i>
+            Back
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-primary px-4"
+            [disabled]="loading"
+          >
+
+            <span *ngIf="!loading">
+              <i class="bi bi-check-circle me-2"></i>
+              Update Group
+            </span>
+
+            <span *ngIf="loading">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Updating...
+            </span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
