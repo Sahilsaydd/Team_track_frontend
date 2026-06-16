@@ -28,9 +28,10 @@
 	<div class="row g-4">
 		<ng-container *ngIf="filteredGroups.length; else empty">
 			<div class="col-12 col-sm-6 col-lg-4" *ngFor="let g of filteredGroups">
-  <a
-    [routerLink]="['/groups', g.id]"
+  <div
     class="group-card text-decoration-none"
+    role="button"
+    (click)="viewGroup(g.id)"
   >
     <div class="group-card-header">
       <img
@@ -71,7 +72,7 @@
         <i class="bi bi-arrow-right"></i>
       </span>
     </div>
-  </a>
+  </div>
 </div>
 		</ng-container>
 

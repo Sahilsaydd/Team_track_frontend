@@ -37,9 +37,12 @@ export class AuthGuard implements CanActivate {
 
 
     const user = sessionStorage.getItem('user');
+    const currentUser = sessionStorage.getItem('currentUser');
     const token = sessionStorage.getItem('token');
 
-    if (user || token) {
+    // Some parts of the app store the logged in user under `currentUser`.
+    // Accept either `user` or `currentUser` (or a token) as valid authentication.
+    if (user || currentUser || token) {
       return true;
     }
 

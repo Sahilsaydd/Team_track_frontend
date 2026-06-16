@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateGroupModel } from '../model/create-group-model';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 import { Updategroup ,UpdateGroupRequest } from '../model/updategroup';
 
 @Injectable({
@@ -51,5 +51,25 @@ export class Group {
   );
 }
 
+
+addMembers(payload:any):Observable<any>{
+  return this.http.post(`${this.url}/members/add`,payload)
+}
+
+removeMember(data: any) {
+  return this.http.delete(
+    `${this.url}/members/remove`,
+    {
+      body: data
+    }
+  );
+}
+
+changeLeader(data: any) {
+  return this.http.patch(
+    `${this.url}/leader/change`,
+    data
+  );
+}
 
 }

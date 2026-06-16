@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { Group } from '../../../../core/services/group';
+import { Router } from '@angular/router';
 
 export interface EmployeeGroup {
   id: number;
@@ -61,7 +62,8 @@ export class EmployeeGroups implements OnInit {
 
   constructor(
     private groupServices: Group,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -90,4 +92,8 @@ getImageUrl(path: string) {
 
   return `${this.apiUrl}/${path}`;
 }
+
+  viewGroup(id: number) {
+    this.router.navigate(['/groups', id]);
+  }
 }
