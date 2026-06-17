@@ -29,7 +29,7 @@ export class AllUser implements OnInit {
 
   constructor(private user: User ,  private cdr:ChangeDetectorRef) {}
 
-  
+
   ngOnInit(): void {
     this.user.getAllUsers().subscribe({
       next: (response) => {
@@ -37,7 +37,7 @@ export class AllUser implements OnInit {
         this.updateStats();
         this.applyFilters();
         this.loading = false;
-        this.cdr.detectChanges();
+       this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Unable to load users.';

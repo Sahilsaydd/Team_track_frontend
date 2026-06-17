@@ -20,9 +20,10 @@ import Swal from 'sweetalert2';
   styleUrl: './group-details.css',
 })
 export class GroupDetails implements OnInit {
-
+  currentUserId!: number;
+  leader: any = null;
   group_id!: number;
-
+  isGroupLeader = false;
   group: any = {};
   members: any[] = [];
   tasks: any[] = [];
@@ -44,14 +45,15 @@ selectedEmployees: any[] = [];
   ) {}
 
   ngOnInit(): void {
-
+   
+console.log('Current User ID:', this.currentUserId);
     this.group_id = Number(
       this.route.snapshot.paramMap.get('id')
     );
 
     this.loadGroupDetails();
     this.loadGroupMembers();
-    this.loadGroupTasks();
+    this.loadGroupTasks(this.group_id);
 
     // Determine current user role from localStorage (common pattern in this app)
     try {
@@ -65,6 +67,17 @@ selectedEmployees: any[] = [];
         const role = normalize(sessionStorage.getItem('role'));
         this.isEmployee = role === 'employee';
       }
+
+  if (raw) {
+    const user = JSON.parse(raw);
+
+    this.currentUserId =
+      user.id ||
+      user.user?.id ||
+      user.data?.id;
+
+    console.log('Current User ID:', this.currentUserId);
+  }
     } catch (e) {
       this.isEmployee = false;
     }
@@ -72,6 +85,8 @@ selectedEmployees: any[] = [];
     if(!this.isEmployee){
      this.loadEmployees();
     }
+
+
 
     console.log('Current User:', sessionStorage.getItem('currentUser'));
 console.log('User:', sessionStorage.getItem('user'));
@@ -160,42 +175,77 @@ console.log('isEmployee:', this.isEmployee);
         },
       });
   }
+loadGroupMembers(): void {
 
-  loadGroupMembers(): void {
+  this.group_service
+    .get_group_members(this.group_id)
+    .subscribe({
+      next: (data: any) => {
 
-    this.group_service
-      .get_group_members(this.group_id)
-      .subscribe({
-        next: (data: any) => {
-          // API may return either an array or an object { members: [...], leader: {...} }
-          if (!data) {
-            this.members = [];
-          } else if (Array.isArray(data)) {
-            this.members = data;
-          } else if (data.members && Array.isArray(data.members)) {
-            this.members = data.members;
-            (this as any).leader = data.leader ?? null;
-          } else {
-            this.members = [];
-          }
+        console.log('Group Members Response:', data);
 
-          this.members = this.members ?? [];
-          // reload available employees list so add-panel excludes current members
-          if(!this.isEmployee){
-            this.loadEmployees()
-          }
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Members Error', err);
-        },
-      });
-  }
+        if (!data) {
 
-  loadGroupTasks(): void {
+          this.members = [];
+
+        } else if (Array.isArray(data)) {
+
+          this.members = data;
+
+          // Find leader from members array
+          this.leader = this.members.find(
+            (m: any) => m.role_in_group === 'Lead'
+          );
+
+        } else if (data.members && Array.isArray(data.members)) {
+
+          this.members = data.members;
+          this.leader = data.leader ?? null;
+
+        } else {
+
+          this.members = [];
+
+        }
+
+        // Check if current logged-in user is leader
+        if (this.leader) {
+
+          const leaderId =
+            this.leader.user_id ||
+            this.leader.id;
+
+          this.isGroupLeader =
+            Number(leaderId) === Number(this.currentUserId);
+
+          console.log('Leader ID:', leaderId);
+          console.log('Current User ID:', this.currentUserId);
+          console.log('Is Group Leader:', this.isGroupLeader);
+
+        } else {
+
+          this.isGroupLeader = false;
+
+        }
+
+        this.members = this.members ?? [];
+
+        if (!this.isEmployee) {
+          this.loadEmployees();
+        }
+
+        this.cdr.detectChanges();
+      },
+
+      error: (err) => {
+        console.error('Members Error', err);
+      },
+    });
+}
+  loadGroupTasks(groupId: number): void {
 
     this.task_service
-      .get_group_task()
+      .get_group_task(groupId)
       .subscribe({
         next: (data: any) => {
           this.tasks = data ?? [];

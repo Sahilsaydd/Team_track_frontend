@@ -12,12 +12,12 @@ export class Auth {
 
   login(data: any) {
 
-    return this.http.post(this.url + 'login', data, { withCredentials: true });
+    return this.http.post(this.url + 'login', data);
   }
 
   logout() {
     return this.http.post(
-      this.url + 'logout', {}, { withCredentials: true }
+      this.url + 'logout', {}
     );
 
   }

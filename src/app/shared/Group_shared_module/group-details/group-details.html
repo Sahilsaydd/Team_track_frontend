@@ -20,20 +20,33 @@
 
         <div class="col">
 
-          <div class="d-flex flex-wrap align-items-center gap-2">
+         <div class="d-flex flex-wrap align-items-center gap-2">
 
-            <h2 class="mb-0 fw-bold">
-              {{ group.name }}
-            </h2>
+  <h2 class="mb-0 fw-bold">
+    {{ group.name }}
+  </h2>
 
-            <span
-              class="badge"
-              [ngClass]="group.is_active ? 'bg-success' : 'bg-secondary'"
-            >
-              {{ group.is_active ? 'Active' : 'Inactive' }}
-            </span>
+  <span
+    class="badge"
+    [ngClass]="group.is_active ? 'bg-success' : 'bg-secondary'">
+    {{ group.is_active ? 'Active' : 'Inactive' }}
+  </span>
 
-          </div>
+
+
+
+  <span *ngIf="isGroupLeader" class="badge bg-warning text-dark px-3 py-2">
+     <i class="fas fa-crown me-2"></i> You are the Group Leader
+  </span>
+
+
+</div>
+
+<div class="mt-2">
+  <span class="badge bg-light text-dark border">
+    Leader : {{ leader?.username }}
+  </span>
+</div>
 
           <p class="text-primary fw-semibold mb-1">
             {{ group.group_code }}
@@ -250,57 +263,98 @@
     </div>
 
     <!-- Tasks -->
+    <!-- Tasks -->
 
-    <div class="tab-pane fade" id="tasks">
+<div class="tab-pane fade" id="tasks">
 
-      <div class="card border-0 shadow-sm">
+  <div class="card border-0 shadow-sm">
 
-        <div class="card-header bg-white d-flex justify-content-between">
+    <div class="card-header bg-white d-flex justify-content-between">
+      <h5 class="mb-0">Group Tasks</h5>
 
-          <h5 class="mb-0">
-            Group Tasks
-          </h5>
+      <button
+        *ngIf="isGroupLeader"
+        class="btn btn-primary btn-sm">
+        Create Task
+      </button>
+    </div>
 
-          <button class="btn btn-primary btn-sm">
-            Create Task
-          </button>
+    <div class="list-group list-group-flush">
 
-        </div>
+      <div
+        class="list-group-item"
+        *ngFor="let task of tasks"
+      >
 
-        <div class="list-group list-group-flush">
+        <div class="d-flex justify-content-between align-items-start">
 
-          <div
-            class="list-group-item"
-            *ngFor="let task of tasks"
-          >
+          <div class="flex-grow-1">
 
-            <div class="d-flex justify-content-between">
+            <h6 class="mb-1 fw-bold">
+              {{ task.title }}
+            </h6>
 
-              <div>
+            <p class="text-muted mb-2">
+              {{ task.description }}
+            </p>
 
-                <h6 class="mb-1">
-                  {{ task.title }}
-                </h6>
+            <div class="row g-2 small">
 
-                <small class="text-muted">
-                  {{ task.description }}
-                </small>
-
+              <div class="col-md-4">
+                <strong>Task Type:</strong>
+                {{ task.task_type }}
               </div>
 
-              <span class="badge bg-primary">
-                {{ task.status }}
-              </span>
+              <div class="col-md-4">
+                <strong>Assigned By:</strong>
+                {{ task.assigned_by_name }}
+              </div>
+
+              <div class="col-md-4">
+                <strong>Assigned To:</strong>
+                {{ task.assigned_to_name }}
+              </div>
+
+              <div class="col-md-4">
+                <strong>Priority:</strong>
+                {{ task.priority }}
+              </div>
+
+              <div class="col-md-4">
+                <strong>Approval:</strong>
+                {{ task.approval_status }}
+              </div>
+
+              <div class="col-md-4">
+                <strong>Deadline:</strong>
+                {{ task.deadline | date:'dd MMM yyyy' }}
+              </div>
 
             </div>
 
           </div>
+
+          <span
+            class="badge"
+            [ngClass]="{
+              'bg-secondary': task.status === 'todo',
+              'bg-warning text-dark': task.status === 'in_progress',
+              'bg-success': task.status === 'completed',
+              'bg-danger': task.status === 'blocked'
+            }"
+          >
+            {{ task.status | titlecase }}
+          </span>
 
         </div>
 
       </div>
 
     </div>
+
+  </div>
+
+</div>
 
     <!-- Notifications -->
 

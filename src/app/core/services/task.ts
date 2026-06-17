@@ -13,7 +13,7 @@ export class Task {
   }
 
   // get group task
-  get_group_task(): Observable<any[]>{
-    return this.http.get<any[]>(`${this.url}/group`)
-  }
+ get_group_task(groupId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.url}/group/${groupId}`);
+}
 }
