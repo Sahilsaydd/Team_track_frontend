@@ -72,6 +72,18 @@ export const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path:'tasks/:taskId',
+    loadComponent:()=>import('./shared/task_shared_module/task-details/task-details').then(m=>m.TaskDetails),
+    canActivate:[AuthGuard]
+  },
+
+  {
+    path:'tasks/create_group_task/:groupId',
+    loadComponent:()=>import('./features/Employee/task/create-group-task/create-group-task').then(m=>m.CreateGroupTask
+    ),
+    canActivate:[AuthGuard]
+  },
+  {
     path: 'profile',
     loadComponent:()=> import('./features/SuperAdmin/Profile/profile/profile').then(m=>m.Profile),
     canActivate: [AuthGuard]

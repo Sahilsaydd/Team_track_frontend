@@ -4,8 +4,9 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 
+
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 
 import { Group } from '../../../core/services/group';
 import { Task } from '../../../core/services/task';
@@ -41,11 +42,12 @@ selectedEmployees: any[] = [];
     private task_service: Task,
     private UserService:User,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-   
+
 console.log('Current User ID:', this.currentUserId);
     this.group_id = Number(
       this.route.snapshot.paramMap.get('id')
@@ -477,6 +479,21 @@ openChangeLeaderPopup(): void {
       }
     });
   });
+
+}
+
+
+goToCreateTask(): void {
+
+  this.router.navigate([
+    '/tasks/create_group_task',
+    this.group_id
+  ]);
+
+}
+
+viewTaskDetails(taskId: number): void {
+  this.router.navigate(['/tasks', taskId]);
 
 }
 }

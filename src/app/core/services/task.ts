@@ -16,4 +16,19 @@ export class Task {
  get_group_task(groupId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.url}/group/${groupId}`);
 }
+
+get_task_details(taskId: number): Observable<any>{
+  return this.http.get<any>(`${this.url}/${taskId}`);
+}
+
+createTask(data: any) {
+  return this.http.post(
+    `${this.url}/assign`,
+    data
+  );
+}
+updateTaskStatus(taskId:number ,status:string): Observable<any>{
+  return this.http.patch(`${this.url}/${taskId}/status`,{status:status})
+}
+
 }

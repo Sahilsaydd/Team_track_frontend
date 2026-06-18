@@ -1,0 +1,110 @@
+.task-card {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.task-header {
+  background: linear-gradient(
+    135deg,
+    #0d6efd,
+    #0a58ca
+  );
+  color: white;
+  padding: 20px 25px;
+}
+
+.description-box {
+  background: #f8f9fa;
+  padding: 18px;
+  border-radius: 12px;
+  border-left: 4px solid #0d6efd;
+}
+
+.assignment-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e9ecef;
+  transition: 0.3s;
+}
+
+.assignment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.assignment-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+.info-card {
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 14px;
+  height: 100%;
+  border: 1px solid #e9ecef;
+}
+
+.info-card i {
+  font-size: 24px;
+}
+
+.info-card h6 {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.status-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #e9ecef;
+}
+
+.form-select-lg {
+  height: 55px;
+}
+
+.btn-lg {
+  height: 55px;
+}
+
+.badge {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+
+  .task-header h4 {
+    font-size: 1.2rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .assignment-card {
+    flex-direction: row;
+  }
+
+  .info-card {
+    padding: 15px;
+  }
+}

@@ -1,0 +1,139 @@
+<div class="container py-4">
+
+  <div class="card shadow border-0">
+
+    <div class="card-header bg-primary text-white">
+
+      <h4 class="mb-0">
+        Create Group Task
+      </h4>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Task Title
+        </label>
+
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="taskData.title">
+
+      </div>
+
+      <div class="mb-3">
+
+        <label class="form-label">
+          Description
+        </label>
+
+        <textarea
+          rows="4"
+          class="form-control"
+          [(ngModel)]="taskData.description">
+        </textarea>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">
+            Assign To
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="taskData.assigned_to">
+
+            <option [ngValue]="null">
+              Select Member
+            </option>
+
+            <option
+              *ngFor="let member of members"
+              [value]="member.user_id">
+
+              {{ member.username }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">
+            Priority
+          </label>
+
+          <select
+            class="form-select"
+            [(ngModel)]="taskData.priority">
+
+            <option value="">
+              Select Priority
+            </option>
+
+            <option value="Low">
+              Low
+            </option>
+
+            <option value="Medium">
+              Medium
+            </option>
+
+            <option value="High">
+              High
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">
+            Deadline
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="taskData.deadline">
+
+        </div>
+
+      </div>
+
+      <div class="mt-4 d-flex gap-2">
+
+        <button
+          class="btn btn-success"
+          (click)="createTask()">
+
+          Create Task
+
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          [routerLink]="['/groups', groupId]">
+
+          Cancel
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,268 @@
+<div class="container py-4">
+
+  <div class="card shadow-lg border-0 task-card">
+
+    <!-- Header -->
+
+    <div class="card-header task-header">
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+        <div>
+
+          <h4 class="mb-1">
+            <i class="fas fa-tasks me-2"></i>
+            Task Details
+          </h4>
+
+          <small class="opacity-75">
+            View and manage assigned task
+          </small>
+
+        </div>
+
+        <span
+          class="badge fs-6 px-3 py-2"
+          [ngClass]="{
+            'bg-secondary': task.status === 'todo',
+            'bg-warning text-dark': task.status === 'in_progress',
+            'bg-success': task.status === 'completed',
+            'bg-danger': task.status === 'blocked'
+          }">
+
+          {{ task.status | titlecase }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- Body -->
+
+    <div class="card-body p-4">
+
+      <!-- Title -->
+
+      <h2 class="fw-bold mb-3">
+        {{ task.title }}
+      </h2>
+
+      <!-- Description -->
+
+      <div class="description-box mb-4">
+
+        <h6 class="text-muted mb-2">
+          <i class="fas fa-align-left me-2"></i>
+          Description
+        </h6>
+
+        <p class="mb-0">
+          {{ task.description }}
+        </p>
+
+      </div>
+
+      <!-- Assigner / Assignee -->
+
+      <div class="row g-3 mb-4">
+
+        <div class="col-md-6">
+
+          <div class="assignment-card">
+
+            <div class="assignment-icon bg-primary">
+              <i class="fas fa-user-tie"></i>
+            </div>
+
+            <div>
+
+              <small class="text-muted d-block">
+                Assigned By
+              </small>
+
+              <h6 class="mb-0 fw-bold">
+                {{ task.assigned_by_name }}
+              </h6>
+
+              <small class="text-primary">
+                Team Leader / Task Creator
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="assignment-card">
+
+            <div class="assignment-icon bg-success">
+              <i class="fas fa-user-check"></i>
+            </div>
+
+            <div>
+
+              <small class="text-muted d-block">
+                Assigned To
+              </small>
+
+              <h6 class="mb-0 fw-bold">
+                {{ task.assigned_to_name }}
+              </h6>
+
+              <small class="text-success">
+                Responsible for Completion
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Task Information -->
+
+      <div class="row g-3 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+
+          <div class="info-card">
+
+            <i class="fas fa-flag text-danger mb-2"></i>
+
+            <h6>Priority</h6>
+
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': task.priority === 'Low',
+                'bg-warning text-dark': task.priority === 'Medium',
+                'bg-danger': task.priority === 'High'
+              }">
+
+              {{ task.priority }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+          <div class="info-card">
+
+            <i class="fas fa-calendar-alt text-primary mb-2"></i>
+
+            <h6>Deadline</h6>
+
+            <p class="mb-0">
+              {{ task.deadline | date:'dd MMM yyyy' }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+          <div class="info-card">
+
+            <i class="fas fa-check-circle text-success mb-2"></i>
+
+            <h6>Approval</h6>
+
+            <p class="mb-0">
+              {{ task.approval_status }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+          <div class="info-card">
+
+            <i class="fas fa-layer-group text-warning mb-2"></i>
+
+            <h6>Task Type</h6>
+
+            <p class="mb-0">
+              {{ task.task_type }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Status Update -->
+
+      <div class="status-section">
+
+        <h5 class="mb-3">
+
+          <i class="fas fa-sync-alt me-2"></i>
+
+          Update Task Status
+
+        </h5>
+
+        <div class="row g-3">
+
+          <div class="col-md-8">
+
+            <select
+              class="form-select form-select-lg"
+              [(ngModel)]="selectedStatus">
+
+              <option value="todo">
+                Todo
+              </option>
+
+              <option value="in_progress">
+                In Progress
+              </option>
+
+              <option value="completed">
+                Completed
+              </option>
+
+              <option value="blocked">
+                Blocked
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="col-md-4">
+
+            <button
+              class="btn btn-success btn-lg w-100"
+              (click)="updateStatus()">
+                  <!-- (click)="updateStatus() -->
+              <i class="fas fa-save me-2"></i>
+
+              Update Status
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
