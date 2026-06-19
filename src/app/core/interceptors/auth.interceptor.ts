@@ -37,8 +37,8 @@ export const authInterceptor: HttpInterceptorFn = (
     catchError((error: HttpErrorResponse) => {
 
       if (
-        error.status === 401 ||
-        error.status === 403
+        error.status === 401 
+
       ) {
 
         sessionStorage.removeItem('token');

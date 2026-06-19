@@ -31,4 +31,20 @@ updateTaskStatus(taskId:number ,status:string): Observable<any>{
   return this.http.patch(`${this.url}/${taskId}/status`,{status:status})
 }
 
+uploadEvidence(
+  taskId: number,
+  formData: FormData
+) {
+  return this.http.post(
+    `${this.url}/${taskId}/evidence`,
+    formData
+  );
+}
+
+submitTask(taskId: number) {
+  return this.http.post(
+    `${this.url}/${taskId}/submit`,
+    {}
+  );
+}
 }

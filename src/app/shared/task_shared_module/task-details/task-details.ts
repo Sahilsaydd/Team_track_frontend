@@ -22,6 +22,12 @@ export class TaskDetails implements OnInit {
 
   selectedStatus = '';
 
+  evidenceDescription = '';
+
+selectedScreenshot: File | null = null;
+
+selectedFile: File | null = null;
+
   constructor(
     private taskService: Task,
     private route: ActivatedRoute,
@@ -98,4 +104,258 @@ export class TaskDetails implements OnInit {
       }
     });
    }
+
+
+   // upload evidence
+   onScreenshotSelected(event: any): void {
+
+  if (event.target.files.length > 0) {
+
+    this.selectedScreenshot = event.target.files[0];
+
+  }
+
+}
+
+onFileSelected(event: any): void {
+
+  if (event.target.files.length > 0) {
+
+    this.selectedFile = event.target.files[0];
+
+  }
+
+}
+
+uploadEvidence(): void {
+
+  const formData = new FormData();
+
+  formData.append(
+    'description',
+    this.evidenceDescription
+  );
+
+  if (this.selectedScreenshot) {
+
+    formData.append(
+      'screenshot',
+      this.selectedScreenshot
+    );
+
+  }
+
+  if (this.selectedFile) {
+
+    formData.append(
+      'file',
+      this.selectedFile
+    );
+
+  }
+
+  this.taskService
+    .uploadEvidence(
+      this.taskId,
+      formData
+    )
+    .subscribe({
+
+      next: () => {
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Evidence uploaded successfully'
+        });
+
+        this.evidenceDescription = '';
+        this.selectedScreenshot = null;
+        this.selectedFile = null;
+
+      },
+
+      error: (err) => {
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err?.error?.detail || 'Failed to upload evidence'
+        });
+
+      }
+
+    });
+
+}
+
+  confirmUpload(): void {
+    const validation = this.validateEvidence();
+    if (!validation.valid) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Validation',
+        text: validation.message
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: 'Confirm upload',
+      text: 'Are you sure you want to upload this evidence?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, upload',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.uploadEvidence();
+      }
+    });
+  }
+
+  validateEvidence(): { valid: boolean; message?: string } {
+    const descriptionPresent = (this.evidenceDescription || '').trim().length > 0;
+    const filesPresent = !!this.selectedScreenshot || !!this.selectedFile;
+
+    if (!descriptionPresent && !filesPresent) {
+      return { valid: false, message: 'Please provide a description or attach at least one file.' };
+    }
+
+    // optional: enforce description required
+    if (!descriptionPresent) {
+      return { valid: false, message: 'Please add a work description.' };
+    }
+
+    // optional: check file sizes (example: max 10MB)
+    const maxBytes = 10 * 1024 * 1024;
+    if (this.selectedScreenshot && this.selectedScreenshot.size > maxBytes) {
+      return { valid: false, message: 'Screenshot exceeds maximum size of 10MB.' };
+    }
+    if (this.selectedFile && this.selectedFile.size > maxBytes) {
+      return { valid: false, message: 'Supporting document exceeds maximum size of 10MB.' };
+    }
+
+    return { valid: true };
+  }
+
+
+
+submitTaskWithEvidence(): void {
+
+  const validation = this.validateEvidence();
+
+  if (!validation.valid) {
+
+    Swal.fire({
+      icon: 'warning',
+      title: 'Validation',
+      text: validation.message
+    });
+
+    return;
+
+  }
+
+  Swal.fire({
+    title: 'Submit Task?',
+    text: 'Evidence will be uploaded and task will be submitted for review.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Submit',
+    cancelButtonText: 'Cancel'
+  }).then((result) => {
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append(
+      'description',
+      this.evidenceDescription
+    );
+
+    if (this.selectedScreenshot) {
+      formData.append(
+        'screenshot',
+        this.selectedScreenshot
+      );
+    }
+
+    if (this.selectedFile) {
+      formData.append(
+        'file',
+        this.selectedFile
+      );
+    }
+
+    // Step 1: Upload Evidence
+
+    this.taskService
+      .uploadEvidence(
+        this.taskId,
+        formData
+      )
+      .subscribe({
+
+        next: () => {
+
+          // Step 2: Submit Task
+
+          this.taskService
+            .submitTask(this.taskId)
+            .subscribe({
+
+              next: () => {
+
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Success',
+                  text: 'Task submitted for review successfully'
+                });
+
+                this.loadTask(this.taskId);
+
+                this.evidenceDescription = '';
+                this.selectedScreenshot = null;
+                this.selectedFile = null;
+
+              },
+
+              error: (err) => {
+
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Submit Failed',
+                  text:
+                    err?.error?.detail ||
+                    'Task submission failed'
+                });
+
+              }
+
+            });
+
+        },
+
+        error: (err) => {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text:
+              err?.error?.detail ||
+              'Evidence upload failed'
+          });
+
+        }
+
+      });
+
+  });
+
+}
+
 }

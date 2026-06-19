@@ -86,6 +86,120 @@
   font-size: 0.9rem;
 }
 
+/* ===========================
+   Evidence Upload Section
+=========================== */
+
+.evidence-section .card,
+.submit-section .card {
+  border-radius: 16px;
+  border: none;
+}
+
+.evidence-section .card-body,
+.submit-section .card-body {
+  padding: 24px;
+}
+
+.evidence-section h5,
+.submit-section h5 {
+  font-weight: 600;
+}
+
+.evidence-section textarea {
+  resize: none;
+  border-radius: 10px;
+}
+
+.evidence-section .form-control {
+  border-radius: 10px;
+}
+
+.evidence-section .form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+.evidence-section .btn-primary {
+  min-width: 180px;
+  height: 48px;
+  border-radius: 10px;
+}
+
+/* ===========================
+   Submit Task Section
+=========================== */
+
+.submit-section {
+  margin-bottom: 10px;
+}
+
+.submit-section .btn-success {
+  min-width: 220px;
+  height: 52px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.submit-section p {
+  font-size: 0.95rem;
+}
+
+/* ===========================
+   Upload File Styling
+=========================== */
+
+input[type="file"] {
+  padding: 10px;
+}
+
+input[type="file"]::file-selector-button {
+  border: none;
+  background: #0d6efd;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #0a58ca;
+}
+
+/* ===========================
+   Mobile Responsive
+=========================== */
+
+@media (max-width: 768px) {
+
+  .evidence-section .card-body,
+  .submit-section .card-body {
+    padding: 18px;
+  }
+
+  .submit-section .btn-success,
+  .evidence-section .btn-primary {
+    width: 100%;
+  }
+
+  .submit-section .d-flex {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .submit-section .btn-success {
+    margin-top: 15px;
+    font-size: 15px;
+  }
+}
+
+@media(max-width:768px){
+ .status-section .btn-success{
+   font-size: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
 
   .task-header h4 {
