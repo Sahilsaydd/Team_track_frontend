@@ -47,4 +47,20 @@ submitTask(taskId: number) {
     {}
   );
 }
+
+getTaskEvidence(taskId: number){
+  return this.http.get<any[]>(`${this.url}/${taskId}/evidence`)
+}
+
+reviewTask(taskId: number,payload: {review_status: string;comment: string;}) {
+
+  return this.http.post(`${this.url}/${taskId}/review`,payload);
+
+}
+
+getEmployeeTaskReviews(userId: number) {
+  return this.http.get<any[]>(
+    `${this.url}/employee/${userId}`
+  );
+}
 }

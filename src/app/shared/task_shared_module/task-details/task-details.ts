@@ -15,7 +15,17 @@ import Swal from 'sweetalert2';
   styleUrl: './task-details.css',
 })
 export class TaskDetails implements OnInit {
+  taskReviews: any[] = [];
+  evidences: any[]=[]
+  isTaskAssigner =false
+  reviewData={
+    review_status :'approved',
+    comment: ''
+  }
 
+  latestEvidence: any = null;
+
+showEvidenceHistory = false;
   taskId!: number;
 
   task: any = {};
@@ -27,7 +37,7 @@ export class TaskDetails implements OnInit {
 selectedScreenshot: File | null = null;
 
 selectedFile: File | null = null;
-
+currentUserId!: number;
   constructor(
     private taskService: Task,
     private route: ActivatedRoute,
@@ -42,6 +52,7 @@ selectedFile: File | null = null;
     );
 
     this.loadTask(this.taskId);
+
     this.cdr.detectChanges();
   }
 
@@ -56,6 +67,13 @@ selectedFile: File | null = null;
           this.task = data;
 
           this.selectedStatus = data.status;
+          const user = JSON.parse(sessionStorage.getItem('user') || '{}')
+          this.currentUserId = user.id;
+          this.isTaskAssigner =this.task.assigned_by  == this.currentUserId;
+          if(this.isTaskAssigner){
+               this.loadTaskEvidence();
+          }
+          this.loadTaskReviews()
           this.cdr.detectChanges()
           console.log('Task Data:', this.task);
         },
@@ -66,6 +84,80 @@ selectedFile: File | null = null;
 
       });
   }
+
+// Load uploded task evidence
+
+loadTaskEvidence(): void {
+
+  this.taskService.getTaskEvidence(this.taskId).subscribe({
+
+    next: (data: any[]) => {
+
+      this.evidences = Array.isArray(data) ? data : [];
+
+      if (this.evidences.length > 0) {
+        this.latestEvidence = this.evidences[0];
+      } else {
+        this.latestEvidence = null;
+      }
+
+      this.cdr.detectChanges();
+
+    },
+
+    error: (err) => {
+      console.log(err);
+      this.evidences = [];
+      this.latestEvidence = null;
+      this.cdr.detectChanges();
+    }
+
+  });
+
+}
+
+
+toggleEvidenceHistory(): void {
+
+  this.showEvidenceHistory =
+    !this.showEvidenceHistory;
+
+}
+
+submitReview(): void {
+
+  this.taskService.reviewTask(this.taskId,this.reviewData).subscribe({
+
+      next: (res) => {
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Review Submitted',
+          text: 'Task reviewed successfully'
+        });
+
+        this.loadTask(this.taskId);
+        this.cdr.detectChanges()
+      },
+
+
+      error: (err) => {
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Review Failed',
+          text: err.error.detail
+        });
+
+      }
+
+    });
+
+}
+
+
+
+
 
    updateStatus(): void {
     const payload = {
@@ -172,6 +264,7 @@ uploadEvidence(): void {
         this.evidenceDescription = '';
         this.selectedScreenshot = null;
         this.selectedFile = null;
+        this.loadTaskEvidence();
 
       },
 
@@ -356,6 +449,20 @@ submitTaskWithEvidence(): void {
 
   });
 
+}
+
+
+loadTaskReviews():void{
+  const user  = JSON.parse(sessionStorage.getItem('user') || '{}')
+
+  this.taskService.getEmployeeTaskReviews(user.id).subscribe({
+    next:(data)=>{
+      this.taskReviews =data
+      console.log("reviews",this.taskReviews)
+      this.cdr.detectChanges()
+
+    }
+  })
 }
 
 }
