@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
   styleUrl: './task-details.css',
 })
 export class TaskDetails implements OnInit {
+  reviewCount = 0;
   taskReviews: any[] = [];
   evidences: any[]=[]
   isTaskAssigner =false
@@ -35,7 +36,7 @@ showEvidenceHistory = false;
   evidenceDescription = '';
 
 selectedScreenshot: File | null = null;
-
+selectedImage: string = '';
 selectedFile: File | null = null;
 currentUserId!: number;
   constructor(
@@ -50,7 +51,7 @@ currentUserId!: number;
       this.route.snapshot.paramMap.get('taskId')
 
     );
-
+    console.log(this.taskId)
     this.loadTask(this.taskId);
 
     this.cdr.detectChanges();
@@ -67,9 +68,15 @@ currentUserId!: number;
           this.task = data;
 
           this.selectedStatus = data.status;
-          const user = JSON.parse(sessionStorage.getItem('user') || '{}')
+          const user = JSON.parse(sessionStorage.getItem('user') || '{}');
           this.currentUserId = user.id;
-          this.isTaskAssigner =this.task.assigned_by  == this.currentUserId;
+          const userRole = user.role || user.user_role || '';
+
+          // Treat the current user as assigner if they are the original assigner
+          // or if they have a leader/admin role so leaders can review tasks.
+          this.isTaskAssigner =
+            this.task.assigned_by == this.currentUserId ||
+            ['Lead', 'lead', 'Admin', 'SuperAdmin', 'superadmin'].includes(userRole);
           if(this.isTaskAssigner){
                this.loadTaskEvidence();
           }
@@ -453,16 +460,22 @@ submitTaskWithEvidence(): void {
 
 
 loadTaskReviews():void{
-  const user  = JSON.parse(sessionStorage.getItem('user') || '{}')
+ this.taskService.getEmployeeTaskReviewsById(this.taskId).subscribe({
+  next:(data:any)=>{
+   this.taskReviews = data
+   this.reviewCount =data.length
+   console.log(this.reviewCount)
+   this.cdr.detectChanges()
 
-  this.taskService.getEmployeeTaskReviews(user.id).subscribe({
-    next:(data)=>{
-      this.taskReviews =data
-      console.log("reviews",this.taskReviews)
-      this.cdr.detectChanges()
+  },
+  error: (err)=>{
+    console.error(err)
+  }
+ })
+}
 
-    }
-  })
+openImagePreview(imagePath:string): void{
+  this.selectedImage ='http://localhost:8000/' + imagePath;
 }
 
 }

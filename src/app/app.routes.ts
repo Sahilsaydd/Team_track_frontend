@@ -71,6 +71,12 @@ export const routes: Routes = [
     loadComponent:()=>import('./shared/Group_shared_module/group-details/group-details').then(m=>m.GroupDetails),
     canActivate:[AuthGuard]
   },
+
+  {
+    path:'tasks/create-self-task',
+    loadComponent:()=>import('./shared/task_shared_module/create-self-task/create-self-task').then(m=>m.CreateSelfTask),
+    canActivate:[AuthGuard]
+  },
   {
     path:'tasks/:taskId',
     loadComponent:()=>import('./shared/task_shared_module/task-details/task-details').then(m=>m.TaskDetails),
@@ -81,6 +87,12 @@ export const routes: Routes = [
     path:'tasks/create_group_task/:groupId',
     loadComponent:()=>import('./features/Employee/task/create-group-task/create-group-task').then(m=>m.CreateGroupTask
     ),
+    canActivate:[AuthGuard]
+  },
+
+  {
+    path:'notification/employeeNotifications',
+    loadComponent:()=>import('./shared/Notification_shared_module/notification-details/notification-details').then(m=>m.NotificationDetails),
     canActivate:[AuthGuard]
   },
   {

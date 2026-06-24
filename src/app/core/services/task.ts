@@ -63,4 +63,12 @@ getEmployeeTaskReviews(userId: number) {
     `${this.url}/employee/${userId}`
   );
 }
+
+getEmployeeTaskReviewsById(taskId:number){
+  return this.http.get(`${this.url}/${taskId}/reviews`)
+}
+
+createSelfTask(data:any){
+  return this.http.post(`${this.url}/self`,data)
+}
 }

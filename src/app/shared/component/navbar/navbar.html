@@ -17,10 +17,21 @@
 
     <div class="navbar-right">
 
-        <div class="icon-btn">
-            <i class="fa-regular fa-bell"></i>
-        </div>
+        <div
+    class="icon-btn notification-icon"
+    (click)="goToNotifiaction()"
+>
 
+    <i class="fa-regular fa-bell"></i>
+
+    <span
+        *ngIf="unreadCount > 0"
+        class="notification-badge"
+    >
+        <sup>{{ unreadCount }}</sup>
+    </span>
+
+</div>
         <div class="icon-btn">
             <i class="fa-regular fa-circle-question"></i>
         </div>

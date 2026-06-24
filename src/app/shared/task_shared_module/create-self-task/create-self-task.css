@@ -1,0 +1,49 @@
+.self-task-card {
+border-radius: 18px;
+overflow: hidden;
+}
+
+.card-header {
+background: linear-gradient(
+135deg,
+#2563eb,
+#1d4ed8
+);
+color: white;
+padding: 1.5rem;
+}
+
+.form-control,
+.form-select {
+border-radius: 12px;
+min-height: 48px;
+}
+
+.form-control:focus,
+.form-select:focus {
+box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2);
+}
+
+textarea.form-control {
+min-height: 140px;
+}
+
+.btn-primary {
+border-radius: 12px;
+font-weight: 600;
+}
+
+@media (max-width: 768px) {
+
+.card-body {
+padding: 1rem !important;
+}
+
+.card-header {
+text-align: center;
+}
+
+.card-header h3 {
+justify-content: center;
+}
+}

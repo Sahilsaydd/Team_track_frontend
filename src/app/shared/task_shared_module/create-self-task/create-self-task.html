@@ -1,0 +1,132 @@
+<div class="container-fluid py-4">
+
+  <div class="row justify-content-center">
+
+
+<div class="col-12 col-md-10 col-lg-8 col-xl-7">
+
+  <div class="card shadow-lg border-0 self-task-card">
+
+    <div class="card-header border-0">
+
+      <h3 class="mb-0 d-flex align-items-center">
+        <i class="fa-solid fa-user-check me-3"></i>
+        Create Self Task
+      </h3>
+
+      <small class="text-light">
+        Create and manage your personal work tasks
+      </small>
+
+    </div>
+
+    <div class="card-body p-4">
+
+      <form #taskForm="ngForm"
+            (ngSubmit)="createTask()">
+
+        <div class="mb-4">
+
+          <label class="form-label fw-semibold">
+            <i class="fa-solid fa-heading me-2"></i>
+            Task Title
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            [(ngModel)]="taskData.title"
+            #title="ngModel"
+            required
+            placeholder="Enter task title">
+
+          <div
+            class="text-danger mt-1"
+            *ngIf="title.invalid && title.touched">
+
+            Title is required
+
+          </div>
+
+        </div>
+
+        <div class="mb-4">
+
+          <label class="form-label fw-semibold">
+            <i class="fa-solid fa-file-lines me-2"></i>
+            Description
+          </label>
+
+          <textarea
+            rows="5"
+            class="form-control"
+            name="description"
+            [(ngModel)]="taskData.description"
+            placeholder="Describe the task">
+          </textarea>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-4">
+
+            <label class="form-label fw-semibold">
+              <i class="fa-solid fa-flag me-2"></i>
+              Priority
+            </label>
+
+            <select
+              class="form-select"
+              name="priority"
+              [(ngModel)]="taskData.priority">
+
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+
+            </select>
+
+          </div>
+
+          <div class="col-md-6 mb-4">
+
+            <label class="form-label fw-semibold">
+              <i class="fa-solid fa-calendar-days me-2"></i>
+              Deadline
+            </label>
+
+            <input
+              type="datetime-local"
+              class="form-control"
+              name="deadline"
+              [(ngModel)]="taskData.deadline">
+
+          </div>
+
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 py-3"
+          [disabled]="isSubmitting">
+
+          <i class="fa-solid fa-plus me-2"></i>
+
+          {{ isSubmitting ? 'Creating...' : 'Create Self Task' }}
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+</div>

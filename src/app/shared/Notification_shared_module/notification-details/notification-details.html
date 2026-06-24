@@ -1,0 +1,114 @@
+<div class="container py-4">
+
+  <!-- Header -->
+  <div class="notification-header mb-4">
+
+    <div>
+      <h3 class="mb-1">
+        <i class="fas fa-bell me-2"></i>
+        Notifications
+      </h3>
+
+      <p class="text-muted mb-0">
+        View all task updates and review feedback
+      </p>
+    </div>
+
+    <div class="notification-count">
+      <span class="badge bg-primary px-3 py-2">
+        {{ notifications.length }} Notifications
+      </span>
+    </div>
+
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="notifications.length === 0"
+    class="empty-state"
+  >
+    <i class="fas fa-bell-slash"></i>
+
+    <h5>No Notifications</h5>
+
+    <p class="text-muted">
+      You don't have any notifications yet.
+    </p>
+  </div>
+
+  <!-- Notification List -->
+  <div
+    *ngFor="let notification of notifications"
+    class="notification-card"
+  >
+
+    <div class="notification-icon">
+
+      <i
+        class="fas"
+        [ngClass]="{
+          'fa-rotate-left text-danger':
+            notification.notification_type === 'needs_revision',
+
+          'fa-check-circle text-success':
+            notification.notification_type === 'approved',
+
+          'fa-bell text-primary':
+            notification.notification_type !== 'approved' &&
+            notification.notification_type !== 'needs_revision'
+        }"
+      >
+      </i>
+
+    </div>
+
+    <div class="notification-content">
+
+      <div
+        class="d-flex justify-content-between align-items-start flex-wrap"
+      >
+
+        <div>
+
+          <h5 class="mb-1">
+            {{ notification.title }}
+          </h5>
+
+          <p class="notification-message">
+            {{ notification.message }}
+          </p>
+
+        </div>
+
+        <small class="text-muted">
+          {{ notification.created_at | date:'dd MMM yyyy, hh:mm a' }}
+        </small>
+
+      </div>
+
+      <div class="mt-2">
+
+        <span
+          class="badge"
+          [ngClass]="{
+            'bg-danger':
+              notification.notification_type === 'needs_revision',
+
+            'bg-success':
+              notification.notification_type === 'approved',
+
+            'bg-primary':
+              notification.notification_type !== 'approved' &&
+              notification.notification_type !== 'needs_revision'
+          }"
+        >
+          {{ notification.notification_type.split('_').join(' ') }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

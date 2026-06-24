@@ -317,4 +317,77 @@ input[type="file"]::file-selector-button:hover {
     font-size: 14px;
   }
 
+
+}
+
+
+.modal-body img {
+  max-height: 75vh;
+  object-fit: contain;
+}
+
+.modal-content {
+  border-radius: 16px;
+}
+
+
+@media (max-width: 768px) {
+
+  /* Latest Submitted Evidence */
+  .review-evidence-section .card-header h5 {
+    font-size: 0.89rem;
+  }
+
+  /* Review Feedback */
+  .review-feedback-header h5 {
+    font-size: 0.95rem;
+  }
+
+  /* Badge count */
+  .review-evidence-section .badge,
+  .review-feedback-header .badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}
+
+
+.alert {
+  border: none;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.alert i {
+  min-width: 40px;
+}
+
+.alert h5 {
+  margin-bottom: 6px;
+}
+
+.alert-warning {
+  background: #fff8e1;
+}
+
+.alert-success {
+  background: #e8f5e9;
+}
+
+.alert-danger {
+  background: #ffebee;
+}
+
+@media (max-width: 768px) {
+  .alert h5 {
+    font-size: 1rem;
+  }
+
+  .alert p {
+    font-size: 0.85rem;
+  }
+
+  .alert i {
+    font-size: 1.5rem !important;
+  }
 }

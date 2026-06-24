@@ -45,17 +45,11 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       icon: 'fa-solid fa-clipboard-list',
       children: [
         { label: 'All Tasks', icon: 'fa-solid fa-clipboard-list', route: '/tasks' },
-        { label: 'Create Tasks', icon: 'fa-solid fa-folder-plus', route: '/tasks/create' },
+        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus',route: '/tasks/create-self-task' },
+        {label: 'My Tasks' , icon : 'fa-solid fa-user-check',route:'tasks/self-tasks'}
       ]
     },
-    {
-      label: 'Tasks',
-      icon: 'fa-solid fa-list-check',
-      children: [
-        { label: 'All Tasks', icon: 'fa-solid fa-clipboard-list', route: '/tasks' },
-        { label: 'Create Task', icon: 'fa-solid fa-square-plus', route: '/tasks/create' },
-      ]
-    },
+
     {
       label: 'Notifications',
       icon: 'fa-solid fa-bell',
