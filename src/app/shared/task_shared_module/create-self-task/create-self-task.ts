@@ -50,7 +50,7 @@ this.taskService.createSelfTask(this.taskData)
 
       alert('Self Task Created Successfully');
 
-      this.router.navigate(['/employee']);
+      this.router.navigate(['tasks/self-tasks']);
     },
 
     error: (err) => {

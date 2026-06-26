@@ -1,0 +1,89 @@
+/* ng-select */
+
+::ng-deep .ng-select-container{
+    min-height:55px !important;
+    border-radius:12px !important;
+    border:1px solid #d6d6d6 !important;
+}
+
+::ng-deep .ng-dropdown-panel{
+    border-radius:12px;
+    overflow:hidden;
+}
+
+::ng-deep .ng-option{
+    padding:12px 15px !important;
+}
+
+::ng-deep .ng-option-marked{
+    background:#eef5ff !important;
+}
+
+.user-option{
+    display:flex;
+    align-items:center;
+}
+
+.user-details{
+    margin-left:12px;
+}
+
+.user-name{
+    font-weight:600;
+    color:#212529;
+}
+
+.user-email{
+    font-size:13px;
+    color:#6c757d;
+}
+
+.avatar-circle{
+
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#0d6efd,#6ea8fe);
+
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:700;
+    font-size:15px;
+
+    flex-shrink:0;
+
+}
+
+.avatar-circle-small{
+
+    width:32px;
+    height:32px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#0d6efd,#6ea8fe);
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:13px;
+    font-weight:700;
+
+}
+
+::ng-deep .ng-select-focused .ng-select-container{
+
+    border-color:#0d6efd !important;
+
+    box-shadow:0 0 0 .2rem rgba(13,110,253,.15);
+
+}

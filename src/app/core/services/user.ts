@@ -35,6 +35,9 @@ export class User {
     return this.http.get<AppUser[]>(`${this.url}/all_employees`);
   }
 
+  getAllAdmins(){
+    return this.http.get<any[]>(`${this.url}/all_admins`)
+  }
   deactivateEmployee(id: number): Observable<any> {
     return this.http.put<any>(`${this.url}/deactivate/${id}`, {});
   }
@@ -42,5 +45,6 @@ export class User {
   activateEmployee(id: number): Observable<any>{
     return this.http.put<any>(`${this.url}/activate/${id}`, {});
   }
+
 
 }

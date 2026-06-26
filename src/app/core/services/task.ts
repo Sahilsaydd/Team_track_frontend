@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CreatePersonalTask } from '../model/create-personal-task';
 
 @Injectable({
   providedIn: 'root',
@@ -71,4 +72,36 @@ getEmployeeTaskReviewsById(taskId:number){
 createSelfTask(data:any){
   return this.http.post(`${this.url}/self`,data)
 }
+
+getSelfAllTask():Observable<any>{
+  return this.http.get(`${this.url}/self_tasks`)
+}
+
+
+addTaskLog(data:any){
+  return this.http.post(`${this.url}/logs`,data)
+}
+
+exportReport(
+  reportType: string,
+  selectedDate?: string
+): Observable<Blob> {
+
+  let url = `${this.url}/report/export?report_type=${reportType}`;
+
+  if (selectedDate) {
+    url += `&selected_date=${selectedDate}`;
+  }
+
+  return this.http.get(url, {
+    responseType: 'blob'
+  });
+}
+
+createPersonalTask(data:CreatePersonalTask){
+  return this.http.post(`${this.url}/personal`,data)
+}
+
+
+
 }

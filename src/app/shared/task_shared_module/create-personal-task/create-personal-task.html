@@ -1,0 +1,209 @@
+<div class="container py-4">
+  <!-- Header -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white py-3">
+      <h3 class="mb-0">
+        <i class="fa-solid fa-list-check me-2"></i>
+        Assign Personal Task
+      </h3>
+      <small>Create and assign a personal task to an Admin or Employee.</small>
+    </div>
+
+    <div class="card-body">
+      <form #taskForm="ngForm" (ngSubmit)="submitTask(taskForm)" novalidate>
+        <div class="row">
+          <!-- Title -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">
+              <i class="fa-solid fa-heading text-primary me-2"></i>
+              Task Title
+              <span class="text-danger">*</span>
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              name="title"
+              [(ngModel)]="task.title"
+              #title="ngModel"
+              required
+              minlength="9"
+            />
+
+            <small class="text-danger" *ngIf="title.invalid && title.touched">
+              <span *ngIf="title.errors?.['required']"> Title is required. </span>
+
+              <span *ngIf="title.errors?.['minlength']"> Minimum 9 characters. </span>
+            </small>
+          </div>
+
+          <!-- Priority -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">
+              <i class="fa-solid fa-flag text-warning me-2"></i>
+              Priority
+              <span class="text-danger">*</span>
+            </label>
+
+            <select
+              class="form-select"
+              name="priority"
+              [(ngModel)]="task.priority"
+              #priority="ngModel"
+              required
+            >
+              <option value="">Select Priority</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+
+            <small class="text-danger" *ngIf="priority.invalid && priority.touched">
+              Priority is required.
+            </small>
+          </div>
+
+          <!-- Description -->
+          <div class="col-12 mb-3">
+            <label class="form-label fw-semibold">
+              <i class="fa-solid fa-file-lines text-success me-2"></i>
+              Description
+              <span class="text-danger">*</span>
+            </label>
+
+            <textarea
+              class="form-control"
+              rows="5"
+              name="description"
+              [(ngModel)]="task.description"
+              #description="ngModel"
+              required
+            >
+            </textarea>
+
+            <small class="text-danger" *ngIf="description.invalid && description.touched">
+              Description is required.
+            </small>
+          </div>
+
+          <!-- Deadline -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">
+              <i class="fa-solid fa-calendar-days text-danger me-2"></i>
+              Deadline
+              <span class="text-danger">*</span>
+            </label>
+
+            <input
+              type="date"
+              class="form-control"
+              name="deadline"
+              [(ngModel)]="task.deadline"
+              #deadline="ngModel"
+              required
+            />
+
+            <small class="text-danger" *ngIf="deadline.invalid && deadline.touched">
+              Deadline is required.
+            </small>
+          </div>
+
+          <!-- Assigned To -->
+
+          <div class="col-md-6 mb-3">
+
+  <label class="form-label fw-semibold">
+    <i class="fa-solid fa-user-plus text-primary me-2"></i>
+    Assign To
+    <span class="text-danger">*</span>
+  </label>
+
+<ng-select
+    [items]="users"
+    bindLabel="username"
+    bindValue="id"
+    [(ngModel)]="task.assigned_to"
+    name="assigned_to"
+    #assignedTo="ngModel"
+    placeholder="Search and select Admin"
+    [searchable]="true"
+    [clearable]="false"
+    required>
+
+    <!-- Selected value -->
+    <ng-template ng-label-tmp let-item="item">
+        <div class="user-option">
+            <div class="avatar-circle-small">
+                {{ item.username.charAt(0).toUpperCase() }}
+            </div>
+
+            <div class="user-details">
+                <div class="user-name">
+                    {{ item.username }}
+                </div>
+                <div class="user-email">
+                    {{ item.email }} · ID: {{ item.id }}
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- Dropdown -->
+    <ng-template ng-option-tmp let-item="item">
+        <div class="user-option">
+            <div class="avatar-circle">
+                {{ item.username.charAt(0).toUpperCase() }}
+            </div>
+
+            <div class="user-details">
+                <div class="user-name">
+                    {{ item.username }}
+                </div>
+
+                <div class="user-email">
+                    {{ item.email }}
+                </div>
+
+                <div class="user-email">
+                    ID: {{ item.id }}
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+</ng-select>
+
+<small
+    class="text-danger"
+    *ngIf="assignedTo.invalid && assignedTo.touched">
+    Please select an Admin.
+</small>
+
+</div>
+        </div>
+
+        <hr />
+
+        <div class="d-flex justify-content-end">
+          <button
+            class="btn btn-primary px-4"
+            type="submit"
+            [disabled]="isSubmitting || taskForm.invalid"
+          >
+            <span *ngIf="isSubmitting">
+              <span class="spinner-border spinner-border-sm me-2"></span>
+
+              Assigning...
+            </span>
+
+            <span *ngIf="!isSubmitting">
+              <i class="fa-solid fa-paper-plane me-2"></i>
+
+              Assign Task
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

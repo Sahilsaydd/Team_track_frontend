@@ -1,0 +1,76 @@
+<div class="card shadow border-0">
+
+  <div class="card-header bg-primary text-white">
+
+    <h5 class="mb-0">
+      Download Work Report
+    </h5>
+
+  </div>
+
+  <div class="card-body">
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+
+        <label class="form-label">
+          Report Type
+        </label>
+
+        <select
+          class="form-select"
+          [(ngModel)]="reportType">
+
+          <option value="daily">
+            Daily
+          </option>
+
+          <option value="weekly">
+            Weekly
+          </option>
+
+          <option value="monthly">
+            Monthly
+          </option>
+
+          <option value="yearly">
+            Yearly
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="col-md-4 mb-3">
+
+        <label class="form-label">
+          Select Date
+        </label>
+
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="selectedDate">
+
+      </div>
+
+      <div class="col-md-4 d-flex align-items-end">
+
+        <button
+          class="btn btn-success w-100"
+          (click)="downloadReport()">
+
+          <i class="fas fa-download me-2"></i>
+
+          Download Report
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

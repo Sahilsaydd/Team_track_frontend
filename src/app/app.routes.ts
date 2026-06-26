@@ -72,11 +72,34 @@ export const routes: Routes = [
     canActivate:[AuthGuard]
   },
 
+    {
+    path:'tasks/personal_details',
+    loadComponent:()=>import('./shared/task_shared_module/personal-assigned-task/personal-assigned-task').then(m=>m.PersonalAssignedTaskComponent),
+    canActivate:[AuthGuard]
+  },
   {
     path:'tasks/create-self-task',
     loadComponent:()=>import('./shared/task_shared_module/create-self-task/create-self-task').then(m=>m.CreateSelfTask),
     canActivate:[AuthGuard]
   },
+
+  {
+    path:'tasks/task-sheet',
+    loadComponent:()=>import('./shared/task_shared_module/task-sheet-file/task-sheet-file').then(m=>m.TaskSheetFile),
+    canActivate:[AuthGuard]
+  },
+
+  {
+    path:'tasks/self-tasks',
+    loadComponent:()=>import('./shared/task_shared_module/self-task-details/self-task-details').then(m=>m.SelfTaskDetails),
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'tasks/personal',
+    loadComponent:()=>import('./shared/task_shared_module/create-personal-task/create-personal-task').then(m=>m.CreatePersonalTask),
+    canActivate:[AuthGuard]
+  },
+
   {
     path:'tasks/:taskId',
     loadComponent:()=>import('./shared/task_shared_module/task-details/task-details').then(m=>m.TaskDetails),
