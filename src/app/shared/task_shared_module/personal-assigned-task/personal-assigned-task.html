@@ -1,0 +1,459 @@
+<div class="container-fluid py-4">
+
+  <div class="card shadow border-0">
+
+    <!-- Header -->
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="fas fa-tasks me-2"></i>
+        My Assigned Tasks
+      </h4>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Empty State -->
+      <div *ngIf="tasks.length === 0" class="text-center text-muted py-4">
+        <i class="fas fa-folder-open fa-3x mb-3"></i>
+        <h5>No Assigned Tasks Found</h5>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="tasks.length > 0" class="table-responsive">
+
+        <table class="table table-hover align-middle">
+
+          <thead class="table-light">
+            <tr>
+              <th>SR.NO</th>
+              <th>Title</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Approve Status</th>
+              <th>Deadline</th>
+              <th>Assigned By</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let task of paginatedTasks; let i = index">
+
+              <td>
+                <strong>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</strong>
+              </td>
+
+              <!-- Title -->
+              <td>
+                <i class="fas fa-clipboard-list text-primary me-1"></i>
+                {{ task.title }}
+              </td>
+
+              <!-- Priority -->
+              <td>
+                <span class="badge" [ngClass]="{
+                    'bg-danger': task.priority === 'High',
+                    'bg-warning text-dark': task.priority === 'Medium',
+                    'bg-success': task.priority === 'Low'
+                  }">
+                  {{ task.priority }}
+                </span>
+              </td>
+
+              <!-- Status -->
+              <td>
+                <span class="badge" [ngClass]="{
+                    'bg-secondary': task.status === 'todo',
+                    'bg-primary': task.status === 'in_progress',
+                    'bg-success': task.status === 'completed',
+                    'bg-warning': task.status === 'submitted'
+                  }">
+                  {{ task.status }}
+                </span>
+              </td>
+              <!-- Approve Status -->
+              <td>
+                <span class="badge" [ngClass]="{
+      'bg-secondary': task.approval_status === 'pending',
+      'bg-success': task.approval_status === 'approved',
+      'bg-danger': task.approval_status === 'needs_revision',
+      'bg-warning':task.approval_status === 'submitted'
+    }">
+
+                  {{ task.approval_status }}
+
+                </span>
+              </td>
+
+              <!-- Deadline -->
+              <td>
+                <i class="far fa-calendar text-primary me-1"></i>
+                {{ task.deadline | date: 'dd-MMM-yyyy' }}
+              </td>
+
+              <!-- Assigned By -->
+              <td>
+                <i class="fas fa-user text-primary me-1"></i>
+                {{ task.assigned_by_name }}
+              </td>
+
+              <!-- Actions -->
+              <td>
+
+                <!-- View -->
+                <button class="btn btn-info btn-sm me-2" data-bs-toggle="modal" data-bs-target="#taskViewModal"
+                  (click)="viewTask(task)">
+                  <i class="fas fa-eye"></i>
+                </button>
+
+                <!-- Reviews -->
+                <button
+                  class="btn btn-sm me-2 text-white"
+                  [ngClass]="selectedTaskForReview?.id === task.id ? 'btn-dark' : 'btn-warning'"
+                  (click)="viewReviews(task)"
+                  title="View Reviews">
+                  <i class="fas fa-comments"></i>
+                </button>
+
+                <!-- Submit -->
+                <button *ngIf="task.status !== 'completed' && task.status !== 'submitted'"
+                  class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#submitTaskModal"
+                  (click)="openSubmitModal(task)">
+
+                  <i class="fas fa-paper-plane me-1"></i>
+                  Submit
+                </button>
+                <!--Log task button-->
+                <button *ngIf="task.approval_status === 'approved' && task.status === 'completed' && !isTaskLogged(task)"
+                  class="btn btn-primary btn-sm" (click)="openLogModal(task)">
+
+                  <i class="fas fa-file-invoice me-1"></i>
+
+                  Log
+
+                </button>
+
+                <span *ngIf="task.approval_status === 'approved' && task.status === 'completed' && isTaskLogged(task)"
+                  class="badge bg-success">
+                  Task is logged
+                </span>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-between align-items-center mt-4 px-2" *ngIf="tasks.length > 0">
+          <span class="text-muted small">
+            Showing {{ currentStart }} to {{ currentEnd }} of {{ tasks.length }} entries
+          </span>
+
+          <ul class="pagination pagination-sm mb-0 shadow-sm">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link text-primary" href="javascript:void(0)" (click)="prevPage()">
+                <i class="fa fa-chevron-left"></i>
+              </a>
+            </li>
+
+            <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="currentPage === page">
+              <a class="page-link" href="javascript:void(0)" (click)="goToPage(page)">{{ page }}</a>
+            </li>
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link text-primary" href="javascript:void(0)" (click)="nextPage()">
+                <i class="fa fa-chevron-right"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="mt-4" *ngIf="selectedTaskForReview">
+          <h5 class="mb-3 text-primary">
+            <i class="fa fa-comments me-2"></i>
+            Reviews for: {{ selectedTaskForReview.title }}
+          </h5>
+          <div class="card bg-light border-0 shadow-sm">
+            <div class="card-body">
+              <div *ngIf="selectedTaskReviews.length === 0" class="text-muted text-center py-3">
+                <i class="fa-regular fa-comment-dots fa-2x mb-2"></i>
+                <p class="mb-0">No reviews found for this task yet.</p>
+              </div>
+
+              <div *ngFor="let review of selectedTaskReviews" class="mb-3 border-bottom pb-3 last-no-border">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <strong>
+                    Status:
+                    <span class="badge"
+                      [ngClass]="{'bg-success': review.reviewed_status === 'approved', 'bg-danger': review.reviewed_status === 'needs_revision', 'bg-warning text-dark': review.reviewed_status === 'pending'}">
+                      {{ review.reviewed_status }}
+                    </span>
+                  </strong>
+                  <small class="text-muted">
+                    <i class="fa-regular fa-clock me-1"></i>
+                    {{ review.created_at | date:'medium' }}
+                  </small>
+                </div>
+                <div class="bg-white p-3 rounded border border-light">
+                  <p class="mb-0 text-dark">{{ review.comment || 'No comment provided.' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="taskViewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-tasks me-2"></i>
+          Task Details
+        </h5>
+
+        <!-- Close Button -->
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body" *ngIf="selectedTask">
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label class="fw-bold text-muted">Title</label>
+            <p>{{ selectedTask.title }}</p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="fw-bold text-muted">Priority</label>
+            <p>
+              <span class="badge" [ngClass]="{
+                  'bg-danger': selectedTask.priority === 'High',
+                  'bg-warning text-dark': selectedTask.priority === 'Medium',
+                  'bg-success': selectedTask.priority === 'Low'
+                }">
+                {{ selectedTask.priority }}
+              </span>
+            </p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="fw-bold text-muted">Status</label>
+            <p>
+              <span class="badge" [ngClass]="{
+                  'bg-secondary': selectedTask.status === 'todo',
+                  'bg-primary': selectedTask.status === 'in_progress',
+                  'bg-success': selectedTask.status === 'completed'
+                }">
+                {{ selectedTask.status }}
+              </span>
+            </p>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="fw-bold text-muted">Deadline</label>
+            <p>{{ selectedTask.deadline | date:'dd-MMM-yyyy hh:mm a' }}</p>
+          </div>
+
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold text-muted">Description</label>
+          <div class="border rounded p-3 bg-light">
+            {{ selectedTask.description }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold text-muted">Assigned By</label>
+          <p>
+            <i class="fas fa-user text-primary me-1"></i>
+            {{ selectedTask.assigned_by_name }}
+          </p>
+        </div>
+
+        <div class="mb-3">
+          <label class="fw-bold text-muted">Created At</label>
+          <p>{{ selectedTask.created_at | date:'dd-MMM-yyyy hh:mm a' }}</p>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="modal fade" id="submitTaskModal" tabindex="-1">
+
+  <div class="modal-dialog modal-md modal-dialog-centered">
+
+    <div class="modal-content">
+
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">
+          Submit Task with Evidence
+        </h5>
+
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Task name -->
+        <p><strong>Task:</strong> {{ selectedTask?.title }}</p>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label>Description *</label>
+          <textarea class="form-control" [value]="evidenceData.description"
+            (input)="evidenceData.description = $any($event.target).value" rows="3">
+          </textarea>
+        </div>
+
+        <!-- Screenshot -->
+        <div class="mb-3">
+          <label>Screenshot</label>
+          <input type="file" class="form-control" accept="image/*" (change)="onScreenshotSelect($event)">
+        </div>
+
+        <!-- File -->
+        <div class="mb-3">
+          <label>File (PDF / Docs)</label>
+          <input type="file" class="form-control" (change)="onFileSelect($event)">
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+
+        <button class="btn btn-success" (click)="submitTaskWithEvidence()">
+          Submit Task
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="modal fade" id="taskLogModal" tabindex="1">
+
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+
+    <div class="modal-content">
+
+      <div class="modal-header bg-primary text-white">
+
+        <h5 class="modal-title">
+
+          <i class="fas fa-file-alt me-2"></i>
+
+          Add Task Log
+
+        </h5>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+
+          <label class="form-label fw-bold">
+
+            Task
+
+          </label>
+
+          <input class="form-control" [value]="selectedLogTask?.title" readonly>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+
+              Hours Spent
+
+            </label>
+
+            <input type="number" min="0" step="0.5" class="form-control" [(ngModel)]="taskLog.hours_spent">
+
+          </div>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+
+            Work Note
+
+          </label>
+
+          <textarea rows="5" class="form-control" [(ngModel)]="taskLog.work_note">
+                    </textarea>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+          Close
+
+        </button>
+
+        <button class="btn btn-primary" (click)="submitTaskLog()">
+
+          <i class="fas fa-save me-1"></i>
+
+          Save Log
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

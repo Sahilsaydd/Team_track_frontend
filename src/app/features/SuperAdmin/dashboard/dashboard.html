@@ -1,0 +1,238 @@
+<div class="container-fluid dashboard-container">
+
+    <div class="dashboard-header">
+        <div class="row align-items-center">
+            <div class="col-lg-8 col-md-7 col-12">
+                <h2 class="dashboard-title">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Super Admin Dashboard
+                </h2>
+
+                <p class="dashboard-subtitle">
+                    Monitor users, groups, employee performance and overall task progress.
+                </p>
+            </div>
+
+            <div class="col-lg-4 col-md-5 col-12 text-md-end mt-3 mt-md-0">
+                <button class="btn btn-primary">
+                    <i class="fas fa-sync-alt me-2"></i>
+                    Refresh Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card users">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <div class="content">
+                    <h6>Total Users</h6>
+                    <h2>{{dashboard?.summary?.users}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card admin">
+                <div class="icon"><i class="fas fa-user-shield"></i></div>
+                <div class="content">
+                    <h6>Admins</h6>
+                    <h2>{{dashboard?.summary?.admins}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card employee">
+                <div class="icon"><i class="fas fa-user-tie"></i></div>
+                <div class="content">
+                    <h6>Employees</h6>
+                    <h2>{{dashboard?.summary?.employees}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card group">
+                <div class="icon"><i class="fas fa-layer-group"></i></div>
+                <div class="content">
+                    <h6>Groups</h6>
+                    <h2>{{dashboard?.summary?.groups}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card active">
+                <div class="icon"><i class="fas fa-tasks"></i></div>
+                <div class="content">
+                    <h6>Active Tasks</h6>
+                    <h2>{{dashboard?.summary?.active_tasks}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card completed">
+                <div class="icon"><i class="fas fa-check-circle"></i></div>
+                <div class="content">
+                    <h6>Completed Today</h6>
+                    <h2>{{dashboard?.summary?.completed_today}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card review">
+                <div class="icon"><i class="fas fa-clock"></i></div>
+                <div class="content">
+                    <h6>Pending Review</h6>
+                    <h2>{{dashboard?.summary?.pending_reviews}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="dashboard-card overdue">
+                <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="content">
+                    <h6>Overdue Tasks</h6>
+                    <h2>{{dashboard?.summary?.overdue_tasks}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 g-4 dashboard-chart-grid">
+        <div class="col-12 col-xl-7">
+            <div class="card shadow-sm border-0 dashboard-chart-card task-status-card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h5 class="mb-1">
+                            <i class="fas fa-chart-pie text-primary me-2"></i>
+                            Task Status Overview
+                        </h5>
+                        <span class="text-muted small">
+                            Current task distribution across all statuses
+                        </span>
+                    </div>
+                    <span class="chart-badge">
+                        <i class="fas fa-layer-group me-1"></i>
+                        Task Flow
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-wrap">
+                        <canvas id="taskStatusChart"></canvas>
+                    </div>
+
+                    <div class="status-summary mt-4">
+                        <div class="status-chip todo">
+                            <span><i class="fas fa-circle me-2"></i>Todo</span>
+                            <strong>{{ dashboard?.task_status?.todo ?? 0 }}</strong>
+                        </div>
+                        <div class="status-chip in-progress">
+                            <span><i class="fas fa-spinner me-2"></i>In Progress</span>
+                            <strong>{{ dashboard?.task_status?.in_progress ?? 0 }}</strong>
+                        </div>
+                        <div class="status-chip submitted">
+                            <span><i class="fas fa-paper-plane me-2"></i>Submitted</span>
+                            <strong>{{ dashboard?.task_status?.submitted ?? 0 }}</strong>
+                        </div>
+                        <div class="status-chip completed">
+                            <span><i class="fas fa-circle-check me-2"></i>Completed</span>
+                            <strong>{{ dashboard?.task_status?.completed ?? 0 }}</strong>
+                        </div>
+                        <div class="status-chip revision">
+                            <span><i class="fas fa-rotate-left me-2"></i>Needs Revision</span>
+                            <strong>{{ dashboard?.task_status?.needs_revision ?? 0 }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-5">
+            <div class="card shadow-sm border-0 dashboard-chart-card role-card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h5 class="mb-1">
+                            <i class="fas fa-users text-success me-2"></i>
+                            Role Distribution
+                        </h5>
+                        <span class="text-muted small">
+                            User composition across all roles
+                        </span>
+                    </div>
+                    <span class="chart-badge success">
+                        <i class="fas fa-user-group me-1"></i>
+                        User Mix
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-wrap compact">
+                        <canvas id="roleDistributionChart"></canvas>
+                    </div>
+
+                    <div class="status-summary role-summary mt-4">
+                        <div class="status-chip role-admin">
+                            <span><i class="fas fa-user-shield me-2"></i>Super Admin</span>
+                            <strong>{{ dashboard?.role_distribution?.super_admin ?? 0 }}</strong>
+                        </div>
+                        <div class="status-chip role-leader">
+                            <span><i class="fas fa-user-cog me-2"></i>Admin</span>
+                            <strong>{{ dashboard?.role_distribution?.admin ?? 0 }}</strong>
+                        </div>
+                        <div class="status-chip role-employee">
+                            <span><i class="fas fa-user-tie me-2"></i>Employee</span>
+                            <strong>{{ dashboard?.role_distribution?.employee ?? 0 }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 dashboard-chart-card top-employees-card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h5 class="mb-1">
+                            <i class="fas fa-trophy text-warning me-2"></i>
+                            Top Employees
+                        </h5>
+                        <span class="text-muted small">
+                            Top performers by completed tasks
+                        </span>
+                    </div>
+                    <span class="chart-badge warning">
+                        <i class="fas fa-medal me-1"></i>
+                        Performance
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div class="chart-wrap top-employees-wrap">
+                        <canvas id="topEmployeesChart"></canvas>
+                    </div>
+
+                    <div class="status-summary employee-summary mt-4">
+                        <div
+                            class="status-chip employee-chip"
+                            *ngFor="let employee of dashboard?.top_employees; let i = index">
+                            <span>
+                                <i class="fas fa-user me-2"></i>
+                                {{ i + 1 }}. {{ employee.employee_name }}
+                            </span>
+                            <strong>{{ employee.completed_tasks }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

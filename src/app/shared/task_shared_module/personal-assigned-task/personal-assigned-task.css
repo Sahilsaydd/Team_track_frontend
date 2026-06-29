@@ -1,0 +1,119 @@
+.task-container {
+  padding: 20px;
+  background: #f8f9fc;
+  min-height: 100vh;
+}
+
+/* Header */
+.task-header {
+  margin-bottom: 20px;
+}
+
+.task-header h2 {
+  font-size: 24px;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-header p {
+  color: #7f8c8d;
+  margin-top: 5px;
+}
+
+/* Table */
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.task-table th {
+  background: #2c3e50;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.task-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Hover */
+.task-table tr:hover {
+  background: #f2f6ff;
+}
+
+/* Icons */
+.icon {
+  margin-right: 6px;
+  color: #3498db;
+}
+
+/* Badges */
+.badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.priority {
+  background: #ffeaa7;
+  color: #6c5ce7;
+}
+
+.status {
+  background: #dff9fb;
+  color: #130f40;
+}
+
+/* Buttons */
+.btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* View button */
+.view-btn {
+  background: #3498db;
+  color: white;
+}
+
+.view-btn:hover {
+  background: #2980b9;
+}
+
+/* Submit button */
+.submit-btn {
+  background: #2ecc71;
+  color: white;
+}
+
+.submit-btn:hover {
+  background: #27ae60;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .task-table {
+    font-size: 12px;
+  }
+
+  .btn {
+    padding: 5px;
+    font-size: 10px;
+  }
+}

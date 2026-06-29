@@ -1,0 +1,222 @@
+<div class="container-fluid py-4">
+
+    <div class="card shadow border-0">
+
+        <!-- 🔷 Page Heading -->
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fa fa-tasks me-2"></i>
+                Task Review List
+            </h4>
+
+            <span class="badge bg-light text-primary">
+                Total: {{ tasks.length || 0 }}
+            </span>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Empty State -->
+            <div *ngIf="tasks.length === 0" class="text-center text-muted py-4">
+                <i class="fas fa-folder-open fa-3x mb-3"></i>
+                <h5>No Tasks to Review</h5>
+            </div>
+
+            <!-- 📋 Table -->
+            <div *ngIf="tasks.length > 0" class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>SR.NO</th>
+                            <th><i class="fa fa-heading"></i> Title</th>
+                            <th><i class="fa fa-align-left"></i> Description</th>
+                            <th><i class="fa fa-flag"></i> Priority</th>
+                            <th><i class="fa fa-info-circle"></i> Status</th>
+                            <th><i class="fa fa-check-circle"></i> Approval</th>
+                            <th><i class="fa fa-calendar"></i> Deadline</th>
+                            <th><i class="fa fa-clock"></i> Created</th>
+                            <th><i class="fa fa-cogs"></i> Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let task of tasks; let i =index">
+
+                            <td><strong>{{ i+1 }}</strong></td>
+
+                            <td>
+                                <i class="fa fa-clipboard-list text-primary me-1"></i>
+                                {{ task.title }}
+                            </td>
+
+                            <td>{{ task.description }}</td>
+
+                            <td>
+                                <span class="badge" [ngClass]="{
+                    'bg-danger': task.priority === 'High',
+                    'bg-warning text-dark': task.priority === 'Medium',
+                    'bg-success': task.priority === 'Low'
+                  }">
+                                    {{ task.priority }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge" [ngClass]="{
+                                'bg-secondary': task.status === 'todo',
+                                'bg-primary': task.status === 'in_progress',
+                                'bg-success': task.status === 'completed',
+                                'bg-warning': task.status === 'submitted'
+                              }">
+                                    {{ task.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="badge" [ngClass]="{
+                                'bg-secondary': task.approval_status === 'pending',
+                                'bg-success': task.approval_status === 'approved',
+                                'bg-danger': task.approval_status === 'needs_revision',
+                                'bg-warning': task.approval_status === 'submitted'
+                              }">
+                                    {{ task.approval_status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <i class="far fa-calendar text-primary me-1"></i>
+                                {{ task.deadline | date:'dd-MMM-yyyy' }}
+                            </td>
+
+                            <td>
+                                <i class="fa fa-clock text-muted"></i>
+                                {{ task.created_at | date:'short' }}
+                            </td>
+
+                            <td>
+                                <button class="btn btn-sm btn-info text-white" (click)="openReviewModal(task)">
+                                    <i class="fa fa-eye"></i> Review
+                                </button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 🔷 REVIEW MODAL -->
+<div class="modal fade" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+
+        <div class="modal-content">
+
+            <!-- Header -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fa fa-clipboard-check me-2"></i>
+                    Review Task - {{ selectedTask?.title }}
+                </h5>
+
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+
+                <!-- TASK INFO -->
+                <div class="mb-3">
+                    <p><strong>Description:</strong> {{ selectedTask?.description }}</p>
+                    <p><strong>Priority:</strong> {{ selectedTask?.priority }}</p>
+                    <p><strong>Status:</strong> {{ selectedTask?.status }}</p>
+                </div>
+
+                <hr>
+
+                <!-- EVIDENCE SECTION -->
+                <h6 class="mb-2">
+                    <i class="fa fa-paperclip me-1"></i>
+                    Evidence
+                </h6>
+
+                <div *ngIf="!latestEvidence" class="text-muted">
+                    No evidence uploaded.
+                </div>
+
+                <div *ngIf="latestEvidence" class="border rounded p-3 mb-2 bg-light">
+                    
+                    <!-- Evidence Details -->
+                    <div class="mb-2">
+                        <strong>Evidence Description:</strong>
+                        <p class="mb-1 text-muted">{{ latestEvidence.description || 'No description provided' }}</p>
+                        
+                        <span class="text-muted" style="font-size: 0.85em;">
+                            Uploaded on: {{ latestEvidence.created_at | date:'medium' }}
+                        </span>
+                    </div>
+
+                    <!-- View Evidence Links -->
+                    <div class="d-flex gap-2 mt-2">
+                        <!-- If there's a file URL -->
+                        <a *ngIf="latestEvidence.file_path" [href]="'http://localhost:8000/' + latestEvidence.file_path" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="fa fa-file-pdf"></i> View File
+                        </a>
+                        
+                        <!-- If there's a screenshot URL -->
+                        <button *ngIf="latestEvidence.screenshot_path" (click)="viewImage(latestEvidence.screenshot_path)" class="btn btn-sm btn-outline-info">
+                            <i class="fa fa-image"></i> View Screenshot
+                        </button>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- REVIEW SECTION -->
+                <h6>
+                    <i class="fa fa-comment-dots me-1"></i>
+                    Review Action
+                </h6>
+
+                <label class="form-label fw-bold">Status *</label>
+                <select class="form-select mb-3" [(ngModel)]="reviewStatus">
+                    <option value="" disabled>Select Status</option>
+                    <option value="approved">Approve</option>
+                    <option value="needs_revision">Needs Revision</option>
+                </select>
+
+                <label class="form-label fw-bold">Comment</label>
+                <textarea class="form-control mb-3" rows="3" placeholder="Write your comment..."
+                    [(ngModel)]="reviewComment"></textarea>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary w-100" (click)="submitReview()" [disabled]="!reviewStatus">
+                        <i class="fa fa-paper-plane"></i> Submit Review
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 🖼️ IMAGE VIEW MODAL -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title">Evidence Screenshot</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-0">
+                <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" class="img-fluid" alt="Evidence Screenshot">
+            </div>
+        </div>
+    </div>
+</div>

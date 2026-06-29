@@ -1,126 +1,460 @@
-.superadmin-dashboard {
-  display: grid;
-  gap: 24px;
-  padding: 24px;
+.dashboard-container {
+
+  padding: 25px;
+  background: #f4f7fb;
+  min-height: 100vh;
+
 }
 
-.hero-card,
-.stat-card,
-.table-card,
-.state-card {
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 14px 40px rgba(21, 22, 38, 0.08);
+
+/*================ Header ================*/
+
+.dashboard-header {
+
+  background: linear-gradient(135deg, #0d6efd, #4e73df);
+
+  color: white;
+
+  padding: 30px;
+
+  border-radius: 18px;
+
+  margin-bottom: 30px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+
 }
 
-.hero-card {
-  padding: 28px;
-  background: linear-gradient(135deg, #1f2937 0%, #4f46e5 100%);
-  color: #fff;
+
+.dashboard-title {
+
+  font-size: 30px;
+
+  font-weight: 700;
+
 }
 
-.eyebrow {
-  margin: 0 0 8px;
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
 
-.hero-card h1 {
-  margin: 0;
-  font-size: 2rem;
-}
+.dashboard-subtitle {
 
-.subtitle {
-  margin: 10px 0 0;
-  max-width: 56ch;
-  opacity: 0.9;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-}
-
-.stat-card {
-  padding: 20px;
-}
-
-.stat-label {
-  display: block;
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.stat-value {
-  display: block;
   margin-top: 10px;
-  font-size: 2rem;
-  color: #111827;
+
+  opacity: .9;
+
+  font-size: 15px;
+
 }
 
-.table-card {
-  padding: 20px;
+
+
+/*================ Cards ================*/
+
+.dashboard-card {
+
+  background: #fff;
+
+  border-radius: 18px;
+
+  padding: 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+
+  transition: .35s;
+
+  overflow: hidden;
+
+  position: relative;
+
 }
 
-.table-header h2 {
+
+.dashboard-card:hover {
+
+  transform: translateY(-6px);
+
+  box-shadow: 0 15px 30px rgba(0, 0, 0, .15);
+
+}
+
+
+.dashboard-card .icon {
+
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 18px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 28px;
+
+  color: #fff;
+
+}
+
+
+.dashboard-card h6 {
+
+  color: #777;
+
+  font-size: 15px;
+
+  margin-bottom: 5px;
+
+}
+
+
+.dashboard-card h2 {
+
+  font-weight: 700;
+
+  font-size: 32px;
+
   margin: 0;
+
 }
 
-.table-header p {
-  margin: 6px 0 18px;
-  color: #6b7280;
+
+
+/*========== Card Colors ==========*/
+
+.users .icon {
+
+  background: #0d6efd;
+
 }
 
-.table-responsive {
-  overflow-x: auto;
+
+.admin .icon {
+
+  background: #6f42c1;
+
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+
+.employee .icon {
+
+  background: #198754;
+
 }
 
-th,
-td {
-  padding: 14px 12px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+
+.group .icon {
+
+  background: #fd7e14;
+
 }
 
-th {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  color: #6b7280;
+
+.active .icon {
+
+  background: #20c997;
+
 }
 
-.status-pill {
+
+.completed .icon {
+
+  background: #28a745;
+
+}
+
+
+.review .icon {
+
+  background: #ffc107;
+
+  color: #333;
+
+}
+
+
+.overdue .icon {
+
+  background: #dc3545;
+
+}
+
+
+
+/*================ Responsive ================*/
+
+@media(max-width:991px) {
+
+  .dashboard-title {
+
+    font-size: 24px;
+
+  }
+
+  .dashboard-card {
+
+    padding: 18px;
+
+  }
+
+  .dashboard-card h2 {
+
+    font-size: 26px;
+
+  }
+
+}
+
+
+@media(max-width:576px) {
+
+  .dashboard-container {
+
+    padding: 15px;
+
+  }
+
+  .dashboard-header {
+
+    padding: 20px;
+
+    text-align: center;
+
+  }
+
+  .dashboard-card {
+
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 15px;
+
+  }
+
+}
+
+
+
+/*================ Charts =================*/
+
+.dashboard-chart-card {
+
+  border-radius: 18px;
+
+}
+
+
+.dashboard-chart-card .card-header {
+
+  border-radius: 18px 18px 0 0;
+
+  border-bottom: 1px solid #ececec;
+
+  padding: 18px 20px;
+
+}
+
+
+.dashboard-chart-card h5 {
+
+  margin: 0;
+
+  font-weight: 600;
+
+}
+
+
+.dashboard-chart-card .card-body {
+
+  padding: 25px;
+
+}
+
+
+.task-status-card .card-body {
+  padding-bottom: 18px;
+}
+
+
+.dashboard-chart-grid {
+  align-items: stretch;
+}
+
+
+.chart-badge {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
+  gap: 6px;
+  padding: 8px 12px;
   border-radius: 999px;
-  font-size: 0.85rem;
+  background: #e9f2ff;
+  color: #0d6efd;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+
+.chart-badge.success {
+  background: #eafaf3;
+  color: #198754;
+}
+
+
+.chart-badge.warning {
+  background: #fff4db;
+  color: #b58100;
+}
+
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+}
+
+
+.chart-wrap.compact {
+  min-height: 320px;
+}
+
+
+.top-employees-wrap {
+  min-height: 340px;
+}
+
+
+.status-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+
+.status-chip {
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-weight: 600;
 }
 
-.status-pill.active {
-  background: #dcfce7;
-  color: #166534;
+
+.status-chip span {
+  font-size: 14px;
 }
 
-.status-pill.inactive {
-  background: #fee2e2;
-  color: #991b1b;
+
+.status-chip strong {
+  font-size: 20px;
+  line-height: 1;
 }
 
-.state-card {
-  padding: 20px;
-  color: #111827;
+
+.status-chip.todo {
+  background: linear-gradient(135deg, #6c757d, #9099a1);
 }
 
-.state-card.error {
-  background: #fee2e2;
-  color: #991b1b;
+
+.status-chip.in-progress {
+  background: linear-gradient(135deg, #0d6efd, #4d8eff);
+}
+
+
+.status-chip.submitted {
+  background: linear-gradient(135deg, #ffc107, #ffcf4d);
+  color: #2d2d2d;
+}
+
+
+.status-chip.completed {
+  background: linear-gradient(135deg, #198754, #34b56f);
+}
+
+
+.status-chip.revision {
+  background: linear-gradient(135deg, #dc3545, #f16b78);
+}
+
+
+.role-admin {
+  background: linear-gradient(135deg, #4e73df, #7b97f1);
+}
+
+
+.role-leader {
+  background: linear-gradient(135deg, #6f42c1, #9269dd);
+}
+
+
+.role-employee {
+  background: linear-gradient(135deg, #20c997, #4adbb0);
+}
+
+
+.role-summary {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+
+.employee-summary {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+
+.employee-chip {
+  background: linear-gradient(135deg, #343a40, #5c6670);
+}
+
+
+canvas {
+
+  width: 100% !important;
+
+  max-height: 380px;
+
+} 
+
+
+@media(max-width:1199px) {
+  .chart-wrap,
+  .chart-wrap.compact {
+    min-height: 300px;
+  }
+}
+
+
+@media(max-width:767px) {
+  .dashboard-chart-card .card-body {
+    padding: 18px;
+  }
+
+  .chart-wrap,
+  .chart-wrap.compact {
+    min-height: 260px;
+  }
+
+  .status-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-badge {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .top-employees-wrap {
+    min-height: 280px;
+  }
 }

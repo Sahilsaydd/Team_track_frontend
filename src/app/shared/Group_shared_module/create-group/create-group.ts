@@ -76,6 +76,10 @@ export class CreateGroup implements OnInit {
   get filteredEmployees(): EmployeeOption[] {
     const term = this.employeeSearchTerm.trim().toLowerCase();
     return this.employees.filter((employee) => {
+      if (this.groupData.members.some((member) => member.user_id === employee.id)) {
+        return false;
+      }
+
       if (!term) {
         return true;
       }
@@ -96,6 +100,10 @@ export class CreateGroup implements OnInit {
     return !!this.selectedEmployeeid && !!this.selectedRole && !this.isSelectedEmployeeAlreadyAdded();
   }
 
+  get canAssignLead(): boolean {
+    return this.leaderCount === 0;
+  }
+
   getEmployeeById(userId: number): EmployeeOption | undefined {
     return this.employees.find((employee) => employee.id === userId);
   }
@@ -108,9 +116,31 @@ export class CreateGroup implements OnInit {
     return this.getEmployeeById(userId)?.email || '';
   }
 
+  get availableEmployees(): EmployeeOption[] {
+    return this.filteredEmployees;
+  }
+
+  selectEmployee(employeeId: number): void {
+    this.selectedEmployeeid = employeeId;
+    this.errorMessage = '';
+
+    if (this.leaderCount > 0 && this.selectedRole === 'Lead') {
+      this.selectedRole = 'Member';
+    }
+
+    this.cdr.detectChanges();
+  }
+
   onRoleChange(): void {
     if (this.selectedRole === 'Lead' && this.leaderCount > 0) {
-      this.errorMessage = 'Only one leader is allowed in a group.';
+      Swal.fire({
+        icon: 'warning',
+        title: 'Leader already assigned',
+        text: 'This group already has a leader. Please choose Member for additional employees.',
+        confirmButtonText: 'OK',
+      });
+      this.selectedRole = 'Member';
+      this.errorMessage = 'A leader already exists, so this employee will be added as a member.';
       this.cdr.detectChanges();
       return;
     }
@@ -152,6 +182,12 @@ export class CreateGroup implements OnInit {
     }
 
     if (this.selectedRole === 'Lead' && this.groupData.members.some((m) => m.role_in_group === 'Lead')) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Cannot add another leader',
+        text: 'This group already has a leader. Remove the existing leader or add this employee as a Member.',
+        confirmButtonText: 'OK',
+      });
       this.errorMessage = 'Only one leader is allowed in a group.';
       this.cdr.detectChanges();
       return;
@@ -184,6 +220,14 @@ export class CreateGroup implements OnInit {
   openConfirmDialog(form: NgForm): void {
     if (form.invalid) {
       form.control.markAllAsTouched();
+      this.errorMessage = 'Please complete the required group details before creating it.';
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing details',
+        text: 'Please fill in the group name and description before creating the group.',
+        confirmButtonText: 'OK',
+      });
+      this.cdr.detectChanges();
       return;
     }
 
@@ -266,6 +310,8 @@ export class CreateGroup implements OnInit {
       width: 560,
       reverseButtons: true,
       padding: '1rem',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
       customClass: {
         popup: 'group-review-popup',
         title: 'group-review-title',
@@ -287,7 +333,20 @@ export class CreateGroup implements OnInit {
     this.successMessage = '';
     this.cdr.detectChanges();
 
-    this.groupServices.createGroup(this.groupData).subscribe({
+    const payload: CreateGroupModel = {
+      name: (this.groupData.name || '').trim(),
+      description: (this.groupData.description || '').trim(),
+      profile_pic: this.groupData.profile_pic,
+      members: this.groupData.members.map((member) => ({
+        user_id: Number(member.user_id),
+        role_in_group: member.role_in_group,
+        note: member.note?.trim() || undefined,
+      })),
+    };
+
+    console.log('Creating group with payload:', payload);
+
+    this.groupServices.createGroup(payload).subscribe({
       next: () => {
         this.saving = false;
         this.successMessage = 'Group created successfully.';
@@ -318,8 +377,13 @@ export class CreateGroup implements OnInit {
       },
       error: (err) => {
         this.saving = false;
-        this.errorMessage = err?.error?.detail || 'Unable to create the group right now.';
+        this.errorMessage = err?.error?.detail || err?.message || 'Unable to create the group right now.';
         this.cdr.detectChanges();
+        Swal.fire({
+          icon: 'error',
+          title: 'Group creation failed',
+          text: err?.error?.detail || err?.message || 'Unable to create the group right now.',
+        });
       },
     });
   }

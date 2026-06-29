@@ -99,6 +99,7 @@
               class="form-control"
               name="deadline"
               [(ngModel)]="task.deadline"
+              [attr.min]="today"
               #deadline="ngModel"
               required
             />
@@ -125,7 +126,7 @@
     [(ngModel)]="task.assigned_to"
     name="assigned_to"
     #assignedTo="ngModel"
-    placeholder="Search and select Admin"
+    placeholder="Search and select User"
     [searchable]="true"
     [clearable]="false"
     required>
@@ -176,7 +177,7 @@
 <small
     class="text-danger"
     *ngIf="assignedTo.invalid && assignedTo.touched">
-    Please select an Admin.
+    Please select a User.
 </small>
 
 </div>

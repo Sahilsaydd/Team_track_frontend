@@ -16,6 +16,7 @@ export class SelfTaskDetails implements OnInit {
 
   tasks:any[]= []
   selectedTask:any  =null
+  loggedTaskIds = new Set<number>();
   logData = {
   task_id: 0,
   work_note: '',
@@ -33,7 +34,10 @@ isSubmittingLog = false;
   loadSelfTaskDetails():void{
     this.taskService.getSelfAllTask().subscribe({
       next:(data)=>{
-        this.tasks =data
+        this.tasks = (data ?? []).map((task: any) => ({
+          ...task,
+          is_logged: task.is_logged ?? task.logged ?? task.has_log ?? false
+        }));
         console.log(this.tasks)
         this.cdr.detectChanges()
       },
@@ -109,7 +113,16 @@ isSubmittingLog = false;
       return;
     }
 
-    const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    const cleanupBackdrop = () => {
+      document.body.classList.remove('modal-open');
+      document.body.style.removeProperty('padding-right');
+      document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
+      modalElement.removeEventListener('hidden.bs.modal', cleanupBackdrop);
+    };
+
+    modalElement.addEventListener('hidden.bs.modal', cleanupBackdrop);
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
     modal.hide();
   }
 
@@ -147,6 +160,10 @@ submitTaskLog(): void {
         console.log(res);
 
         this.isSubmittingLog = false;
+        this.loggedTaskIds.add(Number(this.logData.task_id));
+        if (this.selectedTask) {
+          this.selectedTask.is_logged = true;
+        }
 
         Swal.fire({
           icon: 'success',
@@ -182,4 +199,8 @@ submitTaskLog(): void {
     });
 
 }
+
+  isTaskLogged(task: any): boolean {
+    return Boolean(task?.is_logged || this.loggedTaskIds.has(Number(task?.id)));
+  }
 }

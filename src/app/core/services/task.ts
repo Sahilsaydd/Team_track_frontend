@@ -102,6 +102,13 @@ createPersonalTask(data:CreatePersonalTask){
   return this.http.post(`${this.url}/personal`,data)
 }
 
+getPersonalAssignedTasks(): Observable<any>{
+  return this.http.get(`${this.url}/personal/assigned`)
 
+}
+
+getPersonalTasksForReview(): Observable<any[]>{
+  return this.http.get<any[]>(`${this.url}/personal-tasks/review`)
+}
 
 }

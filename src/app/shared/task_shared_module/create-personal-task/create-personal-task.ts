@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { NgSelectComponent } from '@ng-select/ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { Task } from '../../../core/services/task';
 import { User } from '../../../core/services/user';
@@ -12,7 +12,7 @@ import { User } from '../../../core/services/user';
   imports: [
     CommonModule,
     FormsModule,
-    NgSelectComponent
+    NgSelectModule
   ],
   templateUrl: './create-personal-task.html',
   styleUrl: './create-personal-task.css'
@@ -29,6 +29,8 @@ export class CreatePersonalTask implements OnInit {
 
   isSubmitting = false;
 
+  readonly today = this.getTodayDate();
+
   task = {
     title: '',
     description: '',
@@ -44,6 +46,15 @@ export class CreatePersonalTask implements OnInit {
 
   ngOnInit(): void {
     this.loadAssignableUsers();
+  }
+
+  private getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 
   filterUsers(): void {
@@ -70,32 +81,25 @@ export class CreatePersonalTask implements OnInit {
   }
 
   loadAssignableUsers(): void {
+    this.isLoadingUsers = true;
 
-  this.isLoadingUsers = true;
+    const role = sessionStorage.getItem('role');
+    const userObservable = role === 'SuperAdmin' 
+      ? this.userService.getAllAdmins() 
+      : this.userService.getAllEmployees();
 
-  this.userService.getAllAdmins().subscribe({
-
-    next: (response: any[]) => {
-
-      this.users = response;
-
-      this.isLoadingUsers = false;
-
-    },
-
-    error: (err: any) => {
-
-      console.error(err);
-
-      this.isLoadingUsers = false;
-
-      alert('Unable to load users.');
-
-    }
-
-  });
-
-}
+    userObservable.subscribe({
+      next: (response: any[]) => {
+        this.users = response;
+        this.isLoadingUsers = false;
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.isLoadingUsers = false;
+        alert('Unable to load users.');
+      }
+    });
+  }
 
   submitTask(form: NgForm): void {
 
@@ -105,6 +109,11 @@ export class CreatePersonalTask implements OnInit {
 
       return;
 
+    }
+
+    if (this.task.deadline < this.today) {
+      alert('Deadline cannot be in the past.');
+      return;
     }
 
     this.isSubmitting = true;

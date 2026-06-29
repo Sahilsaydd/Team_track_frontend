@@ -45,11 +45,12 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       icon: 'fa-solid fa-clipboard-list',
       children: [
         { label: 'Personal Assigned Task', icon: 'fa-solid fa-clipboard-list', route: '/tasks/personal_details' },
-        {label: 'Personal Task',icon: 'fa-solid fa-address-book',route:'/tasks/personal'},
-        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus',route: '/tasks/create-self-task' },
-        {label: 'All My Tasks' , icon : 'fa-solid fa-user-check',route:'tasks/self-tasks'},
+        { label: 'Personal Task', icon: 'fa-solid fa-address-book', route: '/tasks/personal' },
+        { label: 'Personal Task Review', icon: 'fa-solid fa-clipboard-check', route: '/tasks/personal-tasks/review' },
+        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus', route: '/tasks/create-self-task' },
+        { label: 'All My Tasks', icon: 'fa-solid fa-user-check', route: 'tasks/self-tasks' },
         {
-          label:'Task Sheet', icon: 'fa-solid fa-file-lines',route:'/tasks/task-sheet'
+          label: 'Task Sheet', icon: 'fa-solid fa-file-lines', route: '/tasks/task-sheet'
         }
 
       ]
@@ -94,11 +95,13 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
       label: 'Tasks',
       icon: 'fa-solid fa-list-check',
       children: [
-         { label: 'Personal Assigned Task', icon: 'fa-solid fa-clipboard-list', route: '/tasks/personal_details' },
-        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus',route: '/tasks/create-self-task' },
-        {label: 'All My Tasks' , icon : 'fa-solid fa-user-check',route:'tasks/self-tasks'},
-         {
-          label:'Task Sheet', icon: 'fa-solid fa-file-lines',route:'/tasks/task-sheet'
+        { label: 'Personal Task', icon: 'fa-solid fa-address-book', route: '/tasks/personal' },
+        { label: 'Personal Assigned Task', icon: 'fa-solid fa-clipboard-list', route: '/tasks/personal_details' },
+        { label: 'Personal Task Review', icon: 'fa-solid fa-clipboard-check', route: '/tasks/personal-tasks/review' },
+        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus', route: '/tasks/create-self-task' },
+        { label: 'All My Tasks', icon: 'fa-solid fa-user-check', route: 'tasks/self-tasks' },
+        {
+          label: 'Task Sheet', icon: 'fa-solid fa-file-lines', route: '/tasks/task-sheet'
         }
       ]
     },
@@ -134,11 +137,12 @@ export const SIDEBAR_NAV: Record<string, NavItem[]> = {
     {
       label: 'Tasks',
       icon: 'fa-solid fa-list-check',
-      children:[
-        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus',route: '/tasks/create-self-task' },
-        {label: 'All My Self Tasks' , icon : 'fa-solid fa-user-check',route:'tasks/self-tasks'},
-         {
-          label:'Task Sheet', icon: 'fa-solid fa-file-lines',route:'/tasks/task-sheet'
+      children: [
+        { label: 'Create Self Task', icon: 'fa-solid fa-folder-plus', route: '/tasks/create-self-task' },
+        { label: 'All My Self Tasks', icon: 'fa-solid fa-user-check', route: 'tasks/self-tasks' },
+        { label: 'Personal Assigned Task', icon: 'fa-solid fa-clipboard-list', route: '/tasks/personal_details' },
+        {
+          label: 'Task Sheet', icon: 'fa-solid fa-file-lines', route: '/tasks/task-sheet'
         }
 
       ]

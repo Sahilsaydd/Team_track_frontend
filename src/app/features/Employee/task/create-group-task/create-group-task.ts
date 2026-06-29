@@ -19,6 +19,7 @@ import { ThisReceiver } from '@angular/compiler';
 export class CreateGroupTask implements OnInit {
   groupId!: number;
   members: any[] = [];
+  minDeadline = '';
   taskData = {
     title: '',
     description: '',
@@ -31,8 +32,17 @@ export class CreateGroupTask implements OnInit {
 
   ngOnInit(): void {
     this.groupId = Number(this.route.snapshot.paramMap.get('groupId'))
+    this.minDeadline = this.getTodayDate();
     this.loadMembers();
     this.cdr.detectChanges()
+  }
+
+  private getTodayDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
 
@@ -62,6 +72,14 @@ loadMembers(): void {
 }
 
   createTask(): void {
+    if (this.taskData.deadline && this.taskData.deadline < this.minDeadline) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid deadline',
+        text: 'Deadline cannot be in the past. Please choose today or a future date.'
+      });
+      return;
+    }
 
     if (
       !this.taskData.title ||

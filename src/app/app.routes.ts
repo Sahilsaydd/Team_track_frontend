@@ -72,6 +72,13 @@ export const routes: Routes = [
     canActivate:[AuthGuard]
   },
 
+  {
+    path:'tasks/personal-tasks/review',
+    loadComponent:()=>import('./shared/task_shared_module/personal-task-review/personal-task-review').then(m=>m.PersonalTaskReview),
+    canActivate:[AuthGuard]
+
+  },
+
     {
     path:'tasks/personal_details',
     loadComponent:()=>import('./shared/task_shared_module/personal-assigned-task/personal-assigned-task').then(m=>m.PersonalAssignedTaskComponent),

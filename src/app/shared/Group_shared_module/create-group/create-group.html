@@ -65,7 +65,7 @@
             <i class="fa-solid fa-layer-group section-icon"></i>
           </div>
 
-          <form #groupForm="ngForm" class="row g-4">
+          <form #groupForm="ngForm" class="row g-4" (ngSubmit)="openConfirmDialog(groupForm)">
             <div class="col-md-6">
               <label class="form-label">Group name</label>
               <div class="input-group input-group-lg">
@@ -142,12 +142,12 @@
                 >
               </div>
               <div class="employee-selector">
-                @for (employee of filteredEmployees; track employee.id) {
+                @for (employee of availableEmployees; track employee.id) {
                   <button
                     type="button"
                     class="employee-pill"
                     [class.active]="selectedEmployeeid === employee.id"
-                    (click)="selectedEmployeeid = employee.id"
+                    (click)="selectEmployee(employee.id)"
                   >
                     <span class="employee-pill-avatar">{{ employee.username.charAt(0).toUpperCase() }}</span>
                     <span class="employee-pill-body">
@@ -159,10 +159,10 @@
                     }
                   </button>
                 }
-                @if (!filteredEmployees.length) {
+                @if (!availableEmployees.length) {
                   <div class="employee-empty">
                     <i class="fa-solid fa-user-xmark"></i>
-                    <p>No active employees match your search.</p>
+                    <p>No available employees match your search.</p>
                   </div>
                 }
               </div>
@@ -177,7 +177,7 @@
                 (ngModelChange)="onRoleChange()"
               >
                 <option value="Member">Member</option>
-                <option value="Lead">Lead</option>
+                <option value="Lead" [disabled]="!canAssignLead">Lead</option>
               </select>
             </div>
 
@@ -254,10 +254,9 @@
                 <i class="fa-solid fa-broom me-2"></i>Reset
               </button>
               <button
-                type="button"
+                type="submit"
                 class="btn btn-success btn-lg px-4"
                 [disabled]="saving"
-                (click)="openConfirmDialog(groupForm)"
               >
                 @if (saving) {
                   <span class="spinner-border spinner-border-sm me-2"></span>

@@ -101,7 +101,8 @@
               type="datetime-local"
               class="form-control"
               name="deadline"
-              [(ngModel)]="taskData.deadline">
+              [(ngModel)]="taskData.deadline"
+              [attr.min]="minDeadline">
 
           </div>
 
